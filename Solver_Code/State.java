@@ -1,0 +1,547 @@
+/*
+This code assumes the following classes exist:
+Player
+Enemy
+Potion_Encyclopedia
+Card_Encyclopedia
+Enemy_Encyclopedia
+*/
+
+import java.util.*;
+import Player;
+import Enemy;
+import Potion_Encyclopedia;
+import Card_Encyclopedia;
+import Enemy_Encyclopedia;
+
+public class State {
+
+    public static int Self_Health = 0;
+    public static List<String> Potions = new ArrayList();
+    public static List<String> Cards = new ArrayList();
+    public static int Current_Block = 0;
+    public static int Energy = 0;
+    public static int Strength = 0;
+    public static int Dexterity = 0;
+    public static int Weak = 0;
+    public static int Vulnerable = 0;
+
+    public static int Number_of_Enemies = 0;
+    public static List<String> Enemies = new ArrayList();
+    public static List<Integer> Enemy_Health_List = new ArrayList();
+    public static List<Integer> Damage_Enemy_Inflicts = new ArrayList();
+    public static List<Integer> Block_Enemy_Will_Add = new ArrayList();
+    public static List<Integer> Strengths_Enemy_Adds = new ArrayList();
+    public static List<Integer> Dexterity_Enemy_Adds = new ArrayList();
+    public static List<Integer> Weak_Enemy_Applies = new ArrayList();
+    public static List<Integer> Vulnerable_Enemy_Applies = new ArrayList();
+    public static List<Integer> Frail_Enemy_Applies = new ArrayList();
+    public static List<Integer> Weak_Enemy_Has = new ArrayList();
+    public static List<Integer> Vulnerable_Enemy_Has = new ArrayList();
+
+    public void initialise() {
+        //user attributes
+        Self_Health = Player.health();
+        Current_Block = Player.block();
+        Energy = Player.energy();
+        Potions = Player.potions();
+        Cards = Player.cards();
+        Strength = Player.Strength();
+        Dexterity = Player.Dexterity();
+        Weak = Player.Weak();
+        Vulnerable = Player.Vulnerable();
+
+        //enemy attributes
+        Number_of_Enemies = 0;
+        for (int i = 0; i < Number_of_Enemies; i++) {
+            Enemies.add();
+            Enemy_Health_List.add();
+            Damage_Enemy_Inflicts.add();
+            Block_Enemy_Will_Add.add();
+            Strengths_Enemy_Adds.add();
+            Dexterity_Enemy_Adds.add();
+            Weak_Enemy_Applies.add();
+            Vulnerable_Enemy_Applies.add();
+            Frail_Enemy_Applies.add();
+            Weak_Enemy_Has.add();
+            Vulnerable_Enemy_Has.add();
+        }
+
+    }
+
+
+    public void validate_public_fields() {
+         if (Self_Health < 0) {
+             //throw exception
+         }
+        if (Current_Block < 0) {
+            //throw exception
+        }
+        if (Energy < 0) {
+            //throw exception
+        }
+        if (Strength < 0) {
+            //throw exception
+        }
+        if (Dexterity < 0) {
+            //throw exception
+        }
+        if (Weak < 0) {
+            //throw exception
+        }
+        if (Vulnerable < 0) {
+            //throw exception
+        }
+        if (Potions.size() < 0) {
+            //throw exception
+        }
+        for (String potion : Potions) {
+            if (!Potion_Encyclopedia.contains(potion)) {
+                //throw exception
+            }
+        }
+        if (Cards.size() < 0) {
+            //throw exception
+        }
+        for (String card : Cards) {
+            if (!Card_Encyclopedia.contains(card)) {
+                //throw exception
+            }
+        }
+
+        if (Number_of_Enemies <= 0) {
+            //throw exception
+        }
+        if (Enemies.size() != Number_of_Enemies) {
+            //throw exception
+        }
+        for (String enemy : Enemies) {
+            if (!Enemy_Encyclopedia.contains(enemy)) {
+                //throw exception
+            }
+        }
+        if (Enemy_Health_List.size() != Number_of_Enemies) {
+            //throw exception
+        }
+        for (int health : Enemy_Health_List) {
+            if (health < 0) {
+                //throw exception
+            }
+        }
+        if (Damage_Enemy_Inflicts.size() != Number_of_Enemies) {
+            //throw exception
+        }
+        for (int damage : Damage_Enemy_Inflicts) {
+            if (damage < 0) {
+                //throw exception
+            }
+        }
+        if (Block_Enemy_Will_Add.size() != Number_of_Enemies) {
+            //throw exception
+        }
+        for (int block : Block_Enemy_Will_Add) {
+            if (block < 0) {
+                //throw exception
+            }
+        }
+        if (Strengths_Enemy_Adds.size() != Number_of_Enemies) {
+            //throw exception
+        }
+        for (int strength : Strengths_Enemy_Adds) {
+            if (strength < 0) {
+                //throw exception
+            }
+        }
+        if (Dexterity_Enemy_Adds.size() != Number_of_Enemies) {
+            //throw exception
+        }
+        for (int dexterity : Dexterity_Enemy_Adds) {
+            if (dexterity < 0) {
+                //throw exception
+            }
+        }
+        if (Weak_Enemy_Applies.size() != Number_of_Enemies) {
+            //throw exception
+        }
+        for (int weak : Weak_Enemy_Applies) {
+            if (weak < 0) {
+                //throw exception
+            }
+        }
+        if (Vulnerable_Enemy_Applies.size() != Number_of_Enemies) {
+            //throw exception
+        }
+        for (int vulnerable: Vulnerable_Enemy_Applies) {
+            if (vulnerable < 0) { 
+                //throw exception
+            }
+        }
+        if (Frail_Enemy_Applies.size() != Number_of_Enemies) {
+            //throw exception
+        }
+        for (int frail : Frail_Enemy_Applies) {
+            if (frail < 0) {
+                //throw exception
+            }
+        }
+        if (Weak_Enemy_Has.size() != Number_of_Enemies) {
+            //throw exception
+        }
+        for (int weak : Weak_Enemy_Has) {
+            if (weak < 0) {
+                //throw exception
+            }
+        }
+        if (Vulnerable_Enemy_Has.size() != Number_of_Enemies) {
+            //throw exception
+        }
+        for (int vulnerabe : Vulnerable_Enemy_Has) {
+            if (vulnerabe < 0) {
+                //throw exception
+            }
+        }
+    }
+
+    public void set_self_health(int health_to_add) {
+        Self_Health += health_to_add;
+        if (Self_Health < 0) {
+            Self_Health = 0;
+        }
+        validate_public_fields();
+    }
+
+    public int get_self_health() {
+        int to_return = Self_Health;
+        return to_return;
+    }
+
+    public void remove_potion(String potion_to_remove) {
+        if (!Potions.contains(potion_to_remove)) {
+            //throw Exception
+        }
+        Potions.remove(potion_to_remove);
+        validate_public_fields();
+    }
+
+    public void add_potion(String potion_to_add) {
+        if (!Potion_Encyclopedia.contains(potion_to_add)) {
+            //throw exception
+        }
+        Potions.add(potion_to_add);
+        validate_public_fields();
+    }
+
+    public List<String> get_potions() {
+        ArrayList<String> to_return = Potions;
+        return to_return;
+    }
+
+    public void remove_card(String card_to_remove) {
+        if (!Cards.contains(card_to_remove)) {
+            //throw Exception
+        }
+        Cards.remove(Card_to_remove);
+        validate_public_fields();
+    }
+
+    public void add_card(String card_to_add) {
+        if (!Card_Encyclopedia.contains(card_to_add)) {
+            //throw exception
+        }
+        Cards.add(card_to_add);
+        validate_public_fields();
+    }
+
+    public List<String> get_cards() {
+        ArrayList<String> to_return = Cards;
+        return to_return;
+    }
+
+    public void set_block(int block_to_add) {
+        Current_Block += block_to_add;
+
+        if (Current_Block < 0) {
+            Current_Block = 0;
+        }
+        validate_public_fields();
+    }
+
+    public int get_block() {
+        int to_return = Current_Block;
+        return to_return;
+    }
+
+    public void set_energy(int energy_to_add) {
+        Energy += energ_to_add;
+        if (Energy < 0) {
+            Energy = 0;
+        }
+        validate_public_fields();
+    }
+
+    public int get_energy() {
+        int to_return = Energy;
+        return to_Return;
+    }
+
+    public void set_strength(int strength_to_add) {
+        Strength += strength_to_add;
+        if (Strength < 0) {
+            Strength = 0;
+        }
+    }
+
+    public int get_strength() {
+        to_return = Strength;
+        return to_return;
+    }
+
+    public void set_dexterity(int dexterity_to_add) {
+        Dexterity += dexterity_to_add;
+        if (Dexterity < 0) {
+            Dexterity = 0;
+        }
+        validate_public_fields();
+    }
+
+    public int get_dexterity() {
+        to_return = Dexterity;
+        return to_return;
+    }
+
+    public void set_weak(int weak_to_add) {
+        Weak += weak_to_add;
+        if (Weak < 0) {
+            Weak = 0;
+        }
+        validate_public_fields();
+    }
+
+    public int get_weak() {
+        to_return = Weak;
+        return to_return;
+    }
+
+    public void set_vulnerable(int vulnerable_to_add) {
+        Vulnerable += vulnerable_to_add;
+        if (Vulnerable < 0) {
+            Vulnerable = 0;
+        }
+        validate_public_fields();
+    }
+
+    public int get_vulnerable() {
+        to_return = Vulnerable;
+        return to_return;
+    }
+
+    public void remove_enemy(String enemy_to_remove) {
+        if (!Enemies.contains(enemy_to_remove)) {
+            //throw exception
+        }
+        int index = Enemies.indexOf(enemy_to_remove);
+        Enemies.remove(enemy_to_remove);
+        Number_of_Enemies -= 1;
+        if (Number_of_Enemies < 0) {
+            //throw exception
+        }
+        Enemy_Health_List.remove(index);
+        Damage_Enemy_Inflicts.remove(index);
+        Block_Enemy_Will_Add.remove(index);
+        Strengths_Enemy_Adds.remove(index);
+        Dexterity_Enemy_Adds.remove(index);
+        Weak_Enemy_Applies.remove(index);
+        Vulnerable_Enemy_Applies.remove(index);
+        Frail_Enemy_Applies.remove(index);
+        validate_public_fields();
+    }
+
+    public void add_enemy(String enemy_to_add) {
+        if (!Enemy_Encyclopedia.contains(enemy_to_add)) {
+            //throw exception
+        }
+        Enemies.add(enemy_to_add);
+        Number_of_Enemies += 1;
+        Enemy_Health_List.add();
+        Damage_Enemy_Inflicts.add();
+        Block_Enemy_Will_Add.add();
+        Strengths_Enemy_Adds.add();
+        Dexterity_Enemy_Adds.add();
+        Weak_Enemy_Applies.add();
+        Vulnerable_Enemy_Applies.add();
+        Frail_Enemy_Applies.add();
+        validate_public_fields();
+    }
+
+    public List<String> get_enemies() {
+        return Enemies;
+    }
+
+    public void set_enemy_health(String enemy, Int health_to_add) {
+        if (!Enemies.contains(enemy)) {
+            //throw exception
+        }
+        index = Enemies.indexOf(enemy);
+        Enemy_Health_List.set(index, Enemy_Health_List.get(index) + health_to_add);
+        validate_public_fields();
+    }
+
+    public int get_enemy_health(String enemy) {
+        if (!Enemies.contains(enemy)) {
+            //throw exception
+        }
+        index = Enemies.indexOf(enemy);
+        return Enemy_Health_List.get(index);
+    }
+
+    public void set_enemy_damage(String enemy, Int damage) {
+        if (!Enemies.contains(enemy)) {
+            //throw exception
+        }
+        index = Enemies.indexOf(enemy);
+        Damage_Enemy_Inflicts.set(index, damage);
+        validate_public_fields();
+    }
+
+    public int get_enemy_damage(String enemy) {
+        if (!Enemies.contains(enemy)) {
+            //throw exception
+        }
+        index = Enemies.indexOf(enemy);
+        return Damage_Enemy_Inflicts.get(index);
+    }
+
+    public void set_enemy_block(String enemy, Int block) {
+        if (!Enemies.contains(enemy)) {
+            //throw exception
+        }
+        index = Enemies.indexOf(enemy);
+        Block_Enemy_Will_Add.set(index, Block_Enemy_Will_Add.get(index) + block);
+        validate_public_fields();
+    }
+
+    public int get_enemy_block(String enemy) {
+        if (!Enemies.contains(enemy)) {
+            //throw exception
+        }
+        index = Enemies.indexOf(enemy);
+        return Block_Enemy_Will_Add.get(index);
+    }
+
+    public void set_enemy_strength(String enemy, Int strength) {
+        if (!Enemies.contains(enemy)) {
+            //throw exception
+        }
+        index = Enemies.indexOf(enemy);
+        Strengths_Enemy_Adds.set(index, Strengths_Enemy_Adds.get(index) + strength);
+        validate_public_fields();
+    }
+
+    public int get_enemy_strength(String enemy) {
+        if (!Enemies.contains(enemy)) {
+            //throw exception
+        }
+        index = Enemies.indexOf(enemy);
+        return Strengths_Enemy_Adds.get(index);
+    }
+
+    public void set_enemy_dexterity(String enemy, Int dexterity) {
+        if (!Enemies.contains(enemy)) {
+            //throw exception
+        }
+        index = Enemies.indexOf(enemy);
+        Dexterity_Enemy_Adds.set(index, Dexterity_Enemy_Adds.get(index) + dexterity);
+        validate_public_fields();
+    }
+
+    public int get_enemy_dexterity(String enemy) {
+        if (!Enemies.contains(enemy)) {
+            //throw exception
+        }
+        index = Enemies.indexOf(enemy);
+        return Dexterity_Enemy_Adds.get(index);
+    }
+
+    public void set_weak_enemy_applies(String enemy, Int weak) {
+        if (!Enemies.contains(enemy)) {
+            //throw exception
+        }
+        index = Enemies.indexOf(enemy);
+        Weak_Enemy_Applies.set(index, weak);
+        validate_public_fields();
+    }
+
+    public int get_weak_enemy_applies(String enemy) {
+        if (!Enemies.contains(enemy)) {
+            //throw exception
+        }
+        index = Enemies.indexOf(enemy);
+        return Weak_Enemy_Applies.get(index);
+    }
+
+    public void set_vulnerable_enemy_applies(String enemy, Int vulnerabe) {
+        if (!Enemies.contains(enemy)) {
+            //throw exception
+        }
+        index = Enemies.indexOf(enemy);
+        Vulnerable_Enemy_Applies.set(index, vulnerabe);
+        validate_public_fields();
+    }
+
+    public int get_vulnerable_enemy_applies(String enemy) {
+        if (!Enemies.contains(enemy)) {
+            //throw exception
+        }
+        index = Enemies.indexOf(enemy);
+        return Vulnerable_Enemy_Applies.get(index);
+    }
+
+    public void set_vulnerable_enemy_has(String enemy, Int vulnerabe) {
+        if (!Enemies.contains(enemy)) {
+            //throw exception
+        }
+        index = Enemies.indexOf(enemy);
+        Vulnerable_Enemy_Has.set(index, Vulnerable_Enemy_Has.get(index) + vulnerabe);
+        validate_public_fields();
+    }
+
+    public int get_vulnerable_enemy_has(String enemy) {
+        if (!Enemies.contains(enemy)) {
+            //throw exception
+        }
+        index = Enemies.indexOf(enemy);
+        return Vulnerable_Enemy_Has.get(index);
+    }
+
+    public void set_weak_enemy_has(String enemy, Int weak) {
+        if (!Enemies.contains(enemy)) {
+            //throw exception
+        }
+        index = Enemies.indexOf(enemy);
+        Weak_Enemy_Has.set(index, Weak_Enemy_Has.get(index) + weak);
+        validate_public_fields();
+    }
+
+    public int get_weak_enemy_has(String enemy) {
+        if (!Enemies.contains(enemy)) {
+            //throw exception
+        }
+        index = Enemies.indexOf(enemy);
+        return Weak_Enemy_Has.get(index);
+    }
+
+    public static int score() {
+        double score = 0;
+        //score = f(self_health) + f(potions) + f(number_of_cards) + f(max_damage dooable) + 
+        // + f(max_block_possible) + f(current_block) + f(number_of_enemies) + 
+        //sum(f(importance of each enemy)) + sum(f(Enemy_Health)) + sum(f(Damage_Enemy_Inflicts))
+        // + sum(f(Block_Enemy_Will_Add)) + sum(f(Strength_Enemy_Adds)) + 
+        //sum(f(Dexterity_Enemy_Adds)) + sum(f(Weak_Enemy_Applies)) + sum(f(Frail_Enemy_Applies))
+        // + sum(f(Vulnerable_Enemy_Applies))
+        if ( <= 0) {
+            score += -Double(Integer.MAX_VALUE);
+        }
+        return score;
+    }
+
+}
