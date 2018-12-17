@@ -1,11 +1,11 @@
-/*
+package solver_mod.Solver_Code;/*
 This class takes in an action the user intends to perform.
 The action is checked to be valid.
 If valid, the new state is calculated and returned.
 */
 
 import java.util.*;
-import State;
+import solver_mod.Solver_Code.*;
 
 class Score {
     public Map<String, String> Potion_Dict = new HashMap<String, String>();
@@ -14,12 +14,12 @@ class Score {
     //ppulate the dictionaries
     //in future iterations these will be classes of their own
 
-    public static void main(String[] args) {
+    public void initScore() {
         //what does the user want to do?
         String potion_name = null;
         String card_name = null;
         String target_name = null;
-        current_state = State.getState();
+        State current_state = State.getState();
         
         //1) use a potion
         current_state = use_a_potion(potion_name, target_name, current_state);

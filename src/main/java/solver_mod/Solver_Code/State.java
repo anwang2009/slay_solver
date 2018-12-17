@@ -1,3 +1,4 @@
+package solver_mod.Solver_Code;
 /*
 This code assumes the following classes exist:
 Player
@@ -232,7 +233,7 @@ public class State {
     }
 
     public List<String> get_potions() {
-        ArrayList<String> to_return = Potions;
+        List<String> to_return = Potions;
         return to_return;
     }
 
@@ -240,7 +241,7 @@ public class State {
         if (!Cards.contains(card_to_remove)) {
             //throw Exception
         }
-        Cards.remove(Card_to_remove);
+        Cards.remove(card_to_remove);
         validate_public_fields();
     }
 
@@ -253,7 +254,7 @@ public class State {
     }
 
     public List<String> get_cards() {
-        ArrayList<String> to_return = Cards;
+        List<String> to_return = Cards;
         return to_return;
     }
 
@@ -272,7 +273,7 @@ public class State {
     }
 
     public void set_energy(int energy_to_add) {
-        Energy += energ_to_add;
+        Energy += energy_to_add;
         if (Energy < 0) {
             Energy = 0;
         }
@@ -281,7 +282,7 @@ public class State {
 
     public int get_energy() {
         int to_return = Energy;
-        return to_Return;
+        return to_return;
     }
 
     public void set_strength(int strength_to_add) {
@@ -292,7 +293,7 @@ public class State {
     }
 
     public int get_strength() {
-        to_return = Strength;
+        int to_return = Strength;
         return to_return;
     }
 
@@ -305,7 +306,7 @@ public class State {
     }
 
     public int get_dexterity() {
-        to_return = Dexterity;
+        int to_return =  Dexterity;
         return to_return;
     }
 
@@ -318,7 +319,7 @@ public class State {
     }
 
     public int get_weak() {
-        to_return = Weak;
+        int to_return =  Weak;
         return to_return;
     }
 
@@ -331,7 +332,7 @@ public class State {
     }
 
     public int get_vulnerable() {
-        to_return = Vulnerable;
+        int to_return =  Vulnerable;
         return to_return;
     }
 
@@ -377,11 +378,11 @@ public class State {
         return Enemies;
     }
 
-    public void set_enemy_health(String enemy, Int health_to_add) {
+    public void set_enemy_health(String enemy, int health_to_add) {
         if (!Enemies.contains(enemy)) {
             //throw exception
         }
-        index = Enemies.indexOf(enemy);
+        int index = Enemies.indexOf(enemy);
         Enemy_Health_List.set(index, Enemy_Health_List.get(index) + health_to_add);
         validate_public_fields();
     }
@@ -390,15 +391,15 @@ public class State {
         if (!Enemies.contains(enemy)) {
             //throw exception
         }
-        index = Enemies.indexOf(enemy);
+        int index = Enemies.indexOf(enemy);
         return Enemy_Health_List.get(index);
     }
 
-    public void set_enemy_damage(String enemy, Int damage) {
+    public void set_enemy_damage(String enemy, int damage) {
         if (!Enemies.contains(enemy)) {
             //throw exception
         }
-        index = Enemies.indexOf(enemy);
+        int index = Enemies.indexOf(enemy);
         Damage_Enemy_Inflicts.set(index, damage);
         validate_public_fields();
     }
@@ -407,15 +408,15 @@ public class State {
         if (!Enemies.contains(enemy)) {
             //throw exception
         }
-        index = Enemies.indexOf(enemy);
+        int index = Enemies.indexOf(enemy);
         return Damage_Enemy_Inflicts.get(index);
     }
 
-    public void set_enemy_block(String enemy, Int block) {
+    public void set_enemy_block(String enemy, int block) {
         if (!Enemies.contains(enemy)) {
             //throw exception
         }
-        index = Enemies.indexOf(enemy);
+        int index = Enemies.indexOf(enemy);
         Block_Enemy_Will_Add.set(index, Block_Enemy_Will_Add.get(index) + block);
         validate_public_fields();
     }
@@ -424,15 +425,15 @@ public class State {
         if (!Enemies.contains(enemy)) {
             //throw exception
         }
-        index = Enemies.indexOf(enemy);
+        int index = Enemies.indexOf(enemy);
         return Block_Enemy_Will_Add.get(index);
     }
 
-    public void set_enemy_strength(String enemy, Int strength) {
+    public void set_enemy_strength(String enemy, int strength) {
         if (!Enemies.contains(enemy)) {
             //throw exception
         }
-        index = Enemies.indexOf(enemy);
+        int index = Enemies.indexOf(enemy);
         Strengths_Enemy_Adds.set(index, Strengths_Enemy_Adds.get(index) + strength);
         validate_public_fields();
     }
@@ -441,15 +442,15 @@ public class State {
         if (!Enemies.contains(enemy)) {
             //throw exception
         }
-        index = Enemies.indexOf(enemy);
+        int index = Enemies.indexOf(enemy);
         return Strengths_Enemy_Adds.get(index);
     }
 
-    public void set_enemy_dexterity(String enemy, Int dexterity) {
+    public void set_enemy_dexterity(String enemy, int dexterity) {
         if (!Enemies.contains(enemy)) {
             //throw exception
         }
-        index = Enemies.indexOf(enemy);
+        int index = Enemies.indexOf(enemy);
         Dexterity_Enemy_Adds.set(index, Dexterity_Enemy_Adds.get(index) + dexterity);
         validate_public_fields();
     }
@@ -458,15 +459,15 @@ public class State {
         if (!Enemies.contains(enemy)) {
             //throw exception
         }
-        index = Enemies.indexOf(enemy);
+        int index = Enemies.indexOf(enemy);
         return Dexterity_Enemy_Adds.get(index);
     }
 
-    public void set_weak_enemy_applies(String enemy, Int weak) {
+    public void set_weak_enemy_applies(String enemy, int weak) {
         if (!Enemies.contains(enemy)) {
             //throw exception
         }
-        index = Enemies.indexOf(enemy);
+        int index = Enemies.indexOf(enemy);
         Weak_Enemy_Applies.set(index, weak);
         validate_public_fields();
     }
@@ -475,15 +476,15 @@ public class State {
         if (!Enemies.contains(enemy)) {
             //throw exception
         }
-        index = Enemies.indexOf(enemy);
+        int index = Enemies.indexOf(enemy);
         return Weak_Enemy_Applies.get(index);
     }
 
-    public void set_vulnerable_enemy_applies(String enemy, Int vulnerabe) {
+    public void set_vulnerable_enemy_applies(String enemy, int vulnerabe) {
         if (!Enemies.contains(enemy)) {
             //throw exception
         }
-        index = Enemies.indexOf(enemy);
+        int index = Enemies.indexOf(enemy);
         Vulnerable_Enemy_Applies.set(index, vulnerabe);
         validate_public_fields();
     }
@@ -492,15 +493,15 @@ public class State {
         if (!Enemies.contains(enemy)) {
             //throw exception
         }
-        index = Enemies.indexOf(enemy);
+        int index = Enemies.indexOf(enemy);
         return Vulnerable_Enemy_Applies.get(index);
     }
 
-    public void set_vulnerable_enemy_has(String enemy, Int vulnerabe) {
+    public void set_vulnerable_enemy_has(String enemy, int vulnerabe) {
         if (!Enemies.contains(enemy)) {
             //throw exception
         }
-        index = Enemies.indexOf(enemy);
+        int index = Enemies.indexOf(enemy);
         Vulnerable_Enemy_Has.set(index, Vulnerable_Enemy_Has.get(index) + vulnerabe);
         validate_public_fields();
     }
@@ -509,15 +510,15 @@ public class State {
         if (!Enemies.contains(enemy)) {
             //throw exception
         }
-        index = Enemies.indexOf(enemy);
+        int index = Enemies.indexOf(enemy);
         return Vulnerable_Enemy_Has.get(index);
     }
 
-    public void set_weak_enemy_has(String enemy, Int weak) {
+    public void set_weak_enemy_has(String enemy, int weak) {
         if (!Enemies.contains(enemy)) {
             //throw exception
         }
-        index = Enemies.indexOf(enemy);
+        int index = Enemies.indexOf(enemy);
         Weak_Enemy_Has.set(index, Weak_Enemy_Has.get(index) + weak);
         validate_public_fields();
     }
@@ -526,11 +527,11 @@ public class State {
         if (!Enemies.contains(enemy)) {
             //throw exception
         }
-        index = Enemies.indexOf(enemy);
+        int index = Enemies.indexOf(enemy);
         return Weak_Enemy_Has.get(index);
     }
 
-    public static int score() {
+    public static double score() {
         double score = 0;
         //score = f(self_health) + f(potions) + f(number_of_cards) + f(max_damage dooable) + 
         // + f(max_block_possible) + f(current_block) + f(number_of_enemies) + 
@@ -538,8 +539,8 @@ public class State {
         // + sum(f(Block_Enemy_Will_Add)) + sum(f(Strength_Enemy_Adds)) + 
         //sum(f(Dexterity_Enemy_Adds)) + sum(f(Weak_Enemy_Applies)) + sum(f(Frail_Enemy_Applies))
         // + sum(f(Vulnerable_Enemy_Applies))
-        if ( <= 0) {
-            score += -Double(Integer.MAX_VALUE);
+        if (Self_Health <= 0) {
+            score += (double)Integer.MAX_VALUE;
         }
         return score;
     }
