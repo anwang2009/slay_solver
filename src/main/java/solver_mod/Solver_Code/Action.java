@@ -7,7 +7,7 @@ If valid, the new state is calculated and returned.
 import java.util.*;
 import solver_mod.Solver_Code.*;
 
-class Score {
+public class Action {
     public Map<String, String> Potion_Dict = new HashMap<String, String>();
     public Map<String, String> Card_Dict = new HashMap<String, String>();
     public Map<String, String> Enemy_Dict = new HashMap<String, String>();
