@@ -1,7 +1,11 @@
-package example_mod;
+package solver_mod;
 
+import basemod.interfaces.PostDrawSubscriber;
 import com.evacipated.cardcrawl.modthespire.lib.SpireInitializer;
 import com.megacrit.cardcrawl.cards.AbstractCard;
+import com.megacrit.cardcrawl.core.Settings;
+import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
+import com.megacrit.cardcrawl.relics.AbstractRelic;
 import com.megacrit.cardcrawl.rooms.AbstractRoom;
 
 import basemod.BaseMod;
@@ -9,9 +13,12 @@ import basemod.interfaces.PostBattleSubscriber;
 import basemod.interfaces.PostDungeonInitializeSubscriber;
 import basemod.interfaces.PostExhaustSubscriber;
 
+import static com.megacrit.cardcrawl.dungeons.AbstractDungeon.returnRandomNonCampfireRelic;
+
 @SpireInitializer
-public class ExampleMod implements PostExhaustSubscriber,
-        PostBattleSubscriber, PostDungeonInitializeSubscriber {
+public class SolverMod implements PostExhaustSubscriber,
+        PostBattleSubscriber, PostDungeonInitializeSubscriber,
+        PostDrawSubscriber {
 
     private int count, totalCount;
 
@@ -19,13 +26,13 @@ public class ExampleMod implements PostExhaustSubscriber,
         totalCount = count = 0;
     }
 
-    public ExampleMod() {
+    public SolverMod() {
         BaseMod.subscribe(this);
         resetCounts();
     }
 
     public static void initialize() {
-        new ExampleMod();
+        new SolverMod();
     }
 
     @Override
@@ -46,4 +53,10 @@ public class ExampleMod implements PostExhaustSubscriber,
         resetCounts();
     }
 
+    @Override
+    public void receivePostDraw(AbstractCard c) {
+        AbstractRelic r = returnRandomNonCampfireRelic(AbstractRelic.RelicTier.COMMON);
+        AbstractDungeon.getCurrRoom().spawnRelicAndObtain(Settings.WIDTH / 2.0f,
+                Settings.HEIGHT / 2.0f, r);
+    }
 }
