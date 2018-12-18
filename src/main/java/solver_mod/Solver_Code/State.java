@@ -611,13 +611,6 @@ public class State {
 
     public double score() {
         double score = self_health_score() + number_of_potions_Score();
-        for (String potion : Potions) {
-            score += effect_of_potion_Score(potion);
-        }
-        score += number_of_cards_score();
-        for (String card : Cards) {
-            score += effect_of_card_score(card);
-        }
         score += current_block_score() + current_energy_score() + current_strength_score();
         score += current_dexterity_score() + current_vulnerable_score() + current_weak_score();
         score += number_of_enemies_score();
@@ -642,18 +635,6 @@ public class State {
 
     private double number_of_potions_Score() {
         return (Potions.size()*2);
-    }
-
-    private double effect_of_potion_Score(String potion) {
-        return 0.0;
-    }
-
-    private double number_of_cards_score() {
-        return (Cards.size()*2);
-    }
-
-    private double effect_of_card_score(String card) {
-        return 0.0;
     }
 
     private double current_block_score() {
