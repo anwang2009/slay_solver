@@ -10,10 +10,11 @@ import java.util.Map;
                 //energy_it_gives -> int, energy_it_takes -> int, target -> String}
 
 public class Potion_Encyclopedia {
-    // AbstractPotion has fields for color, rarity, size, and a getPotency()
-    // method. These appear to be the only attributes in each potion class
-    public static Map<String, AbstractPotion> dict;
-    private static AbstractPotion[] potions = {
+    // Relevant fields/methods in AbstractPotion: color (enum with values POISON,
+    // BLUE, FIRE, GREEN, EXPLOSIVE, WEAK, FEAR, STRENGTH, and more), getPotency()
+    // (the actual value associated with the potion's effect).
+    public static Map<String, AbstractPotion> dict = new HashMap<String, AbstractPotion>();
+    private static final AbstractPotion[] potions = {
             new AncientPotion(), new AttackPotion(), new BlockPotion(),
             new BloodPotion(), new DexterityPotion(), new EnergyPotion(),
             new EntropicBrew(), new EssenceOfSteel(), new ExplosivePotion(),

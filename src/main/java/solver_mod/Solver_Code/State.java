@@ -9,9 +9,6 @@ Enemy_Encyclopedia
 */
 
 import java.util.*;
-import Potion_Encyclopedia;
-import Card_Encyclopedia;
-import Enemy_Encyclopedia;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
@@ -54,7 +51,7 @@ public class State {
         }
 
         for (String card : Cards) {
-            new_state.add_card(potion);
+            new_state.add_card(card);
         }
 
         new_state.set_block(Current_Block);
@@ -141,55 +138,55 @@ public class State {
 
     public void validate_public_fields() {
          if (Self_Health < 0) {
-             throw new IllegalArgumentException("Negative Health");
+             //throw exception
          }
         if (Current_Block < 0) {
-            throw new IllegalArgumentException("Negative Block");
+            //throw exception
         }
         if (Energy < 0) {
-            throw new IllegalArgumentException("Negative Energy");
+            //throw exception
         }
         if (Strength < 0) {
-            throw new IllegalArgumentException("Negative Strength");
+            //throw exception
         }
         if (Dexterity < 0) {
-            throw new IllegalArgumentException("Negative Dexterity");
+            //throw exception
         }
         if (Weak < 0) {
-            throw new IllegalArgumentException("Negative Weak");
+            //throw exception
         }
         if (Vulnerable < 0) {
-            throw new IllegalArgumentException("Negative Vulnerable");
+            //throw exception
         }
         if (Frail < 0) {
-            throw new IllegalArgumentException("Negative Frail");
+            //throw exception
         }
         if (Potions.size() < 0) {
-            throw new IllegalArgumentException("Negative Potion Size");
+            //throw exception
         }
         for (String potion : Potions) {
-            if (!Potion_Encyclopedia.contains(potion)) {
-                throw new NoSuchFieldException(potion + " is not valid");
+            if (!Potion_Encyclopedia.dict.containsKey(potion)) {
+                //throw exception
             }
         }
         if (Cards.size() < 0) {
-            throw new IllegalArgumentException("Negative Hand Size");
+            //throw exception
         }
         for (String card : Cards) {
-            if (!Card_Encyclopedia.contains(card)) {
-                throw new NoSuchFieldException(card + " is not valid");
+            if (!Card_Encyclopedia.dict.containsKey(card)) {
+                //throw exception
             }
         }
 
-        if (Number_of_Enemies < 0) {
-            throw new IllegalArgumentException("Negative Number of Enemies");
+        if (Number_of_Enemies <= 0) {
+            //throw exception
         }
         if (Enemies.size() != Number_of_Enemies) {
-            throw new IllegalArgumentException("Number of enemies not aligned with Enemies list");
+            //throw exception
         }
         for (String enemy : Enemies) {
-            if (!Enemy_Encyclopedia.contains(enemy)) {
-                throw new NoSuchFieldException(enemy + " is not valid");
+            if (!Enemy_Encyclopedia.dict.containsKey(enemy)) {
+                //throw exception
             }
         }
         if (Enemy_Health_List.size() != Number_of_Enemies) {
@@ -197,84 +194,79 @@ public class State {
         }
         for (int health : Enemy_Health_List) {
             if (health < 0) {
-                throw new IllegalArgumentException("Negative Enemy Health");
+                //throw exception
             }
         }
         if (Damage_Enemy_Inflicts.size() != Number_of_Enemies) {
-            throw new IllegalArgumentException("Number of enemies not aligned with Damage list");
+            //throw exception
         }
         for (int damage : Damage_Enemy_Inflicts) {
             if (damage < 0) {
-                throw new IllegalArgumentException("Negative Enemy Health");
+                //throw exception
             }
         }
         if (Block_Enemy_Will_Add.size() != Number_of_Enemies) {
-            throw new IllegalArgumentException("Number of enemies not aligned with Block list");
+            //throw exception
         }
         for (int block : Block_Enemy_Will_Add) {
             if (block < 0) {
-                throw new IllegalArgumentException("Negative Enemy Block");
+                //throw exception
             }
         }
         if (Strengths_Enemy_Adds.size() != Number_of_Enemies) {
-            throw new IllegalArgumentException("Number of enemies not aligned with Strength list");
+            //throw exception
         }
         for (int strength : Strengths_Enemy_Adds) {
             if (strength < 0) {
-                throw new IllegalArgumentException("Negative Enemy Strength");
+                //throw exception
             }
         }
         if (Dexterity_Enemy_Adds.size() != Number_of_Enemies) {
-            throw new IllegalArgumentException("Number of enemies not aligned with Dexterity" + 
-            " list");
+            //throw exception
         }
         for (int dexterity : Dexterity_Enemy_Adds) {
             if (dexterity < 0) {
-                throw new IllegalArgumentException("Negative Enemy Dexterity");
+                //throw exception
             }
         }
         if (Weak_Enemy_Applies.size() != Number_of_Enemies) {
-            throw new IllegalArgumentException("Number of enemies not aligned with Weak " +
-             "Applied list");
+            //throw exception
         }
         for (int weak : Weak_Enemy_Applies) {
             if (weak < 0) {
-                throw new IllegalArgumentException("Negative Enemy Weak Applies");
+                //throw exception
             }
         }
         if (Vulnerable_Enemy_Applies.size() != Number_of_Enemies) {
-            throw new IllegalArgumentException("Number of enemies not aligned with" + 
-            " Vulnerable Applied list");
+            //throw exception
         }
         for (int vulnerable: Vulnerable_Enemy_Applies) {
             if (vulnerable < 0) { 
-                throw new IllegalArgumentException("Negative Enemy Vulnerable Applies");
+                //throw exception
             }
         }
         if (Frail_Enemy_Applies.size() != Number_of_Enemies) {
-            throw new IllegalArgumentException("Number of enemies not aligned with Frail" + 
-            " Applied list");
+            //throw exception
         }
         for (int frail : Frail_Enemy_Applies) {
             if (frail < 0) {
-                throw new IllegalArgumentException("Negative Enemy Frail Applies");
+                //throw exception
             }
         }
         if (Weak_Enemy_Has.size() != Number_of_Enemies) {
-            throw new IllegalArgumentException("Number of enemies not aligned with Weak list");
+            //throw exception
         }
         for (int weak : Weak_Enemy_Has) {
             if (weak < 0) {
-                throw new IllegalArgumentException("Negative Enemy Weak");
+                //throw exception
             }
         }
         if (Vulnerable_Enemy_Has.size() != Number_of_Enemies) {
-            throw new IllegalArgumentException("Number of enemies not aligned with" + 
-            " Vulnerable list");
+            //throw exception
         }
         for (int vulnerabe : Vulnerable_Enemy_Has) {
             if (vulnerabe < 0) {
-                throw new IllegalArgumentException("Negative Enemy Vulnerable");
+                //throw exception
             }
         }
     }
@@ -294,15 +286,15 @@ public class State {
 
     public void remove_potion(String potion_to_remove) {
         if (!Potions.contains(potion_to_remove)) {
-            throw new NoSuchFieldException(potion_to_remove + " is not valid");
+            //throw Exception
         }
         Potions.remove(potion_to_remove);
         validate_public_fields();
     }
 
     public void add_potion(String potion_to_add) {
-        if (!Potion_Encyclopedia.contains(potion_to_add)) {
-            throw new NoSuchFieldException(potion_to_add + " is not valid");
+        if (!Potion_Encyclopedia.dict.containsKey(potion_to_add)) {
+            //throw exception
         }
         Potions.add(potion_to_add);
         validate_public_fields();
@@ -315,15 +307,15 @@ public class State {
 
     public void remove_card(String card_to_remove) {
         if (!Cards.contains(card_to_remove)) {
-            throw new NoSuchFieldException(card_to_remove + " is not valid");
+            //throw Exception
         }
         Cards.remove(card_to_remove);
         validate_public_fields();
     }
 
     public void add_card(String card_to_add) {
-        if (!Card_Encyclopedia.contains(card_to_add)) {
-            throw new NoSuchFieldException(card_to_add + " is not valid");
+        if (!Card_Encyclopedia.dict.containsKey(card_to_add)) {
+            //throw exception
         }
         Cards.add(card_to_add);
         validate_public_fields();
@@ -421,20 +413,20 @@ public class State {
     }
 
     public int get_frail() {
-        to_return = Frail;
+        int to_return = Frail;
         return to_return;
     }
 
 
     public void remove_enemy(String enemy_to_remove) {
         if (!Enemies.contains(enemy_to_remove)) {
-            throw new NoSuchFieldException(enemy_to_remove + " is not valid");
+            //throw exception
         }
         int index = Enemies.indexOf(enemy_to_remove);
         Enemies.remove(enemy_to_remove);
         Number_of_Enemies -= 1;
         if (Number_of_Enemies < 0) {
-            throw new IllegalArgumentException("Number of Enemies is Negative");
+            //throw exception
         }
         Enemy_Health_List.remove(index);
         Damage_Enemy_Inflicts.remove(index);
@@ -448,11 +440,11 @@ public class State {
     }
 
     public void add_enemy(String enemy_to_add) {
-        if (!Enemy_Encyclopedia.contains(enemy_to_add)) {
-            throw new NoSuchFieldException(enemy_to_add + " is not valid");
+        if (!Enemy_Encyclopedia.dict.containsKey(enemy_to_add)) {
+            //throw exception
         }
         ++Number_of_Enemies;
-        add_enemy(Enemy_Encyclopedia.get(enemy_to_add));
+        add_enemy(Enemy_Encyclopedia.dict.get(enemy_to_add));
         validate_public_fields();
     }
 
@@ -462,7 +454,7 @@ public class State {
 
     public void set_enemy_health(String enemy, int health_to_add) {
         if (!Enemies.contains(enemy)) {
-            throw new NoSuchFieldException(enemy + " is not valid");
+            //throw exception
         }
         int index = Enemies.indexOf(enemy);
         Enemy_Health_List.set(index, Enemy_Health_List.get(index) + health_to_add);
@@ -471,7 +463,7 @@ public class State {
 
     public int get_enemy_health(String enemy) {
         if (!Enemies.contains(enemy)) {
-            throw new NoSuchFieldException(enemy + " is not valid");
+            //throw exception
         }
         int index = Enemies.indexOf(enemy);
         return Enemy_Health_List.get(index);
@@ -479,7 +471,7 @@ public class State {
 
     public void set_enemy_damage(String enemy, int damage) {
         if (!Enemies.contains(enemy)) {
-            throw new NoSuchFieldException(enemy + " is not valid");
+            //throw exception
         }
         int index = Enemies.indexOf(enemy);
         Damage_Enemy_Inflicts.set(index, damage);
@@ -488,7 +480,7 @@ public class State {
 
     public int get_enemy_damage(String enemy) {
         if (!Enemies.contains(enemy)) {
-            throw new NoSuchFieldException(enemy + " is not valid");
+            //throw exception
         }
         int index = Enemies.indexOf(enemy);
         return Damage_Enemy_Inflicts.get(index);
@@ -496,7 +488,7 @@ public class State {
 
     public void set_enemy_block(String enemy, int block) {
         if (!Enemies.contains(enemy)) {
-            throw new NoSuchFieldException(enemy + " is not valid");
+            //throw exception
         }
         int index = Enemies.indexOf(enemy);
         Block_Enemy_Will_Add.set(index, Block_Enemy_Will_Add.get(index) + block);
@@ -505,7 +497,7 @@ public class State {
 
     public int get_enemy_block(String enemy) {
         if (!Enemies.contains(enemy)) {
-            throw new NoSuchFieldException(enemy + " is not valid");
+            //throw exception
         }
         int index = Enemies.indexOf(enemy);
         return Block_Enemy_Will_Add.get(index);
@@ -513,7 +505,7 @@ public class State {
 
     public void set_enemy_strength(String enemy, int strength) {
         if (!Enemies.contains(enemy)) {
-            throw new NoSuchFieldException(enemy + " is not valid");
+            //throw exception
         }
         int index = Enemies.indexOf(enemy);
         Strengths_Enemy_Adds.set(index, Strengths_Enemy_Adds.get(index) + strength);
@@ -522,7 +514,7 @@ public class State {
 
     public int get_enemy_strength(String enemy) {
         if (!Enemies.contains(enemy)) {
-            throw new NoSuchFieldException(enemy + " is not valid");
+            //throw exception
         }
         int index = Enemies.indexOf(enemy);
         return Strengths_Enemy_Adds.get(index);
@@ -530,7 +522,7 @@ public class State {
 
     public void set_enemy_dexterity(String enemy, int dexterity) {
         if (!Enemies.contains(enemy)) {
-            throw new NoSuchFieldException(enemy + " is not valid");
+            //throw exception
         }
         int index = Enemies.indexOf(enemy);
         Dexterity_Enemy_Adds.set(index, Dexterity_Enemy_Adds.get(index) + dexterity);
@@ -539,7 +531,7 @@ public class State {
 
     public int get_enemy_dexterity(String enemy) {
         if (!Enemies.contains(enemy)) {
-            throw new NoSuchFieldException(enemy + " is not valid");
+            //throw exception
         }
         int index = Enemies.indexOf(enemy);
         return Dexterity_Enemy_Adds.get(index);
@@ -547,7 +539,7 @@ public class State {
 
     public void set_weak_enemy_applies(String enemy, int weak) {
         if (!Enemies.contains(enemy)) {
-            throw new NoSuchFieldException(enemy + " is not valid");
+            //throw exception
         }
         int index = Enemies.indexOf(enemy);
         Weak_Enemy_Applies.set(index, weak);
@@ -556,7 +548,7 @@ public class State {
 
     public int get_weak_enemy_applies(String enemy) {
         if (!Enemies.contains(enemy)) {
-            throw new NoSuchFieldException(enemy + " is not valid");
+            //throw exception
         }
         int index = Enemies.indexOf(enemy);
         return Weak_Enemy_Applies.get(index);
@@ -564,7 +556,7 @@ public class State {
 
     public void set_vulnerable_enemy_applies(String enemy, int vulnerabe) {
         if (!Enemies.contains(enemy)) {
-            throw new NoSuchFieldException(enemy + " is not valid");
+            //throw exception
         }
         int index = Enemies.indexOf(enemy);
         Vulnerable_Enemy_Applies.set(index, vulnerabe);
@@ -573,7 +565,7 @@ public class State {
 
     public int get_vulnerable_enemy_applies(String enemy) {
         if (!Enemies.contains(enemy)) {
-            throw new NoSuchFieldException(enemy + " is not valid");
+            //throw exception
         }
         int index = Enemies.indexOf(enemy);
         return Vulnerable_Enemy_Applies.get(index);
@@ -581,7 +573,7 @@ public class State {
 
     public void set_vulnerable_enemy_has(String enemy, int vulnerabe) {
         if (!Enemies.contains(enemy)) {
-            throw new NoSuchFieldException(enemy + " is not valid");
+            //throw exception
         }
         int index = Enemies.indexOf(enemy);
         Vulnerable_Enemy_Has.set(index, Vulnerable_Enemy_Has.get(index) + vulnerabe);
@@ -590,7 +582,7 @@ public class State {
 
     public int get_vulnerable_enemy_has(String enemy) {
         if (!Enemies.contains(enemy)) {
-            throw new NoSuchFieldException(enemy + " is not valid");
+            //throw exception
         }
         int index = Enemies.indexOf(enemy);
         return Vulnerable_Enemy_Has.get(index);
@@ -598,7 +590,7 @@ public class State {
 
     public void set_weak_enemy_has(String enemy, int weak) {
         if (!Enemies.contains(enemy)) {
-            throw new NoSuchFieldException(enemy + " is not valid");
+            //throw exception
         }
         int index = Enemies.indexOf(enemy);
         Weak_Enemy_Has.set(index, Weak_Enemy_Has.get(index) + weak);
@@ -607,7 +599,7 @@ public class State {
 
     public int get_weak_enemy_has(String enemy) {
         if (!Enemies.contains(enemy)) {
-            throw new NoSuchFieldException(enemy + " is not valid");
+            //throw exception
         }
         int index = Enemies.indexOf(enemy);
         return Weak_Enemy_Has.get(index);
@@ -618,6 +610,7 @@ public class State {
         for (String potion : Potions) {
             score += effect_of_potion_Score(potion);
         }
+        score += number_of_cards_score();
         for (String card : Cards) {
             score += effect_of_card_score(card);
         }
@@ -649,6 +642,10 @@ public class State {
 
     private double effect_of_potion_Score(String potion) {
         return 0.0;
+    }
+
+    private double number_of_cards_score() {
+        return (Cards.size()*2);
     }
 
     private double effect_of_card_score(String card) {
