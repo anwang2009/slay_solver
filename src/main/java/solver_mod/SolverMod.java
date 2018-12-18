@@ -10,9 +10,12 @@ import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.potions.AbstractPotion;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
+import com.megacrit.cardcrawl.rewards.RewardItem;
 import com.megacrit.cardcrawl.rooms.AbstractRoom;
 
 import basemod.BaseMod;
+import com.megacrit.cardcrawl.screens.CardRewardScreen;
+import com.megacrit.cardcrawl.screens.CombatRewardScreen;
 import solver_mod.Solver_Code.Action;
 import solver_mod.Solver_Code.State;
 
@@ -20,11 +23,13 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import static com.megacrit.cardcrawl.dungeons.AbstractDungeon.combatRewardScreen;
 import static com.megacrit.cardcrawl.dungeons.AbstractDungeon.returnRandomNonCampfireRelic;
 
 @SpireInitializer
 public class SolverMod implements PostDungeonInitializeSubscriber,
-        PostDrawSubscriber, PreTurnSubscriber, OnStartBattleSubscriber {
+        PostDrawSubscriber, PreTurnSubscriber, OnStartBattleSubscriber,
+        SeeRewardSubscriber, PreCardRewardSubscriber {
 
     private int count, totalCount;
     private CardGroup cards = null;
@@ -53,6 +58,8 @@ public class SolverMod implements PostDungeonInitializeSubscriber,
         //AbstractDungeon.getCurrRoom().spawnRelicAndObtain(Settings.WIDTH / 2.0f,
          //       Settings.HEIGHT / 2.0f, r);
     }
+
+
     
     @Override
     public void receivePreTurn() {
@@ -76,6 +83,13 @@ public class SolverMod implements PostDungeonInitializeSubscriber,
                 iter.remove();
             }
         }
+
+
+        //if (card.canUse(AbstractDungeon.player, (AbstractMonster)creat)) {
+        //    AbstractDungeon.player.useCard(card, (AbstractMonster)creat, 0);
+        //    return;
+        //}
+
         
         Action act = new Action();
         State currentState = State.getState(),
@@ -105,5 +119,33 @@ public class SolverMod implements PostDungeonInitializeSubscriber,
     @Override
     public void receiveOnBattleStart(AbstractRoom abstractRoom) {
         cards = new CardGroup(AbstractDungeon.player.masterDeck, CardGroupType.MASTER_DECK);
+    }
+
+
+    @Override
+    public void receiveSeeReward() {
+        if (AbstractDungeon.screen != AbstractDungeon.CurrentScreen.COMBAT_REWARD) {
+            return;
+        }
+        List<RewardItem> rewards = AbstractDungeon.combatRewardScreen.rewards;
+        for (RewardItem reward : rewards) {
+            if (reward.type != RewardItem.RewardType.CARD) {
+                reward.hb.clicked = true;
+                reward.update();
+            }
+        }
+    }
+
+    @Override
+    public void receivePreCardReward(CardRewardScreen screen) {
+        if (AbstractDungeon.screen != AbstractDungeon.CurrentScreen.CARD_REWARD) {
+            return;
+        }
+        List<AbstractCard> rewards = screen.rewardGroup;
+        AbstractCard selected = rewards.get(0);
+        selected.hb.hovered = true;
+        selected.hb.justHovered = true;
+        selected.hb.clicked = true;
+        screen.update();
     }
 }
