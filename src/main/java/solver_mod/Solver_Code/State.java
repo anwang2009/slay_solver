@@ -41,7 +41,8 @@ public class State {
     public List<Integer> Weak_Enemy_Has = new ArrayList<Integer>();
     public List<Integer> Vulnerable_Enemy_Has = new ArrayList<Integer>();
 
-    Solver() {
+    State() {
+
         initialise();
     }
 
@@ -142,135 +143,135 @@ public class State {
 
     public void validate_public_fields() {
          if (Self_Health < 0) {
-             //throw exception
+             throw new IllegalArgumentException();
          }
         if (Current_Block < 0) {
-            //throw exception
+            throw new IllegalArgumentException();
         }
         if (Energy < 0) {
-            //throw exception
+            throw new IllegalArgumentException();
         }
         if (Strength < 0) {
-            //throw exception
+            throw new IllegalArgumentException();
         }
         if (Dexterity < 0) {
-            //throw exception
+            throw new IllegalArgumentException();
         }
         if (Weak < 0) {
-            //throw exception
+            throw new IllegalArgumentException();
         }
         if (Vulnerable < 0) {
-            //throw exception
+            throw new IllegalArgumentException();
         }
         if (Frail < 0) {
-            //throw exception
+            throw new IllegalArgumentException();
         }
         if (Potions.size() < 0) {
-            //throw exception
+            throw new IllegalArgumentException();
         }
         for (String potion : Potions) {
             if (!Potion_Encyclopedia.dict.containsKey(potion)) {
-                //throw exception
+                throw new IllegalArgumentException();
             }
         }
         if (Cards.size() < 0) {
-            //throw exception
+            throw new IllegalArgumentException();
         }
         for (String card : Cards) {
             if (!Card_Encyclopedia.dict.containsKey(card)) {
-                //throw exception
+                throw new IllegalArgumentException();
             }
         }
 
         if (Number_of_Enemies <= 0) {
-            //throw exception
+            throw new IllegalArgumentException();
         }
         if (Enemies.size() != Number_of_Enemies) {
-            //throw exception
+            throw new IllegalArgumentException();
         }
         for (String enemy : Enemies) {
             if (!Enemy_Encyclopedia.dict.containsKey(enemy)) {
-                //throw exception
+                throw new IllegalArgumentException();
             }
         }
         if (Enemy_Health_List.size() != Number_of_Enemies) {
-            //throw exception
+            throw new IllegalArgumentException();
         }
         for (int health : Enemy_Health_List) {
             if (health < 0) {
-                //throw exception
+                throw new IllegalArgumentException();
             }
         }
         if (Damage_Enemy_Inflicts.size() != Number_of_Enemies) {
-            //throw exception
+            throw new IllegalArgumentException();
         }
         for (int damage : Damage_Enemy_Inflicts) {
             if (damage < 0) {
-                //throw exception
+                throw new IllegalArgumentException();
             }
         }
         if (Block_Enemy_Will_Add.size() != Number_of_Enemies) {
-            //throw exception
+            throw new IllegalArgumentException();
         }
         for (int block : Block_Enemy_Will_Add) {
             if (block < 0) {
-                //throw exception
+                throw new IllegalArgumentException();
             }
         }
         if (Strengths_Enemy_Adds.size() != Number_of_Enemies) {
-            //throw exception
+            throw new IllegalArgumentException();
         }
         for (int strength : Strengths_Enemy_Adds) {
             if (strength < 0) {
-                //throw exception
+                throw new IllegalArgumentException();
             }
         }
         if (Dexterity_Enemy_Adds.size() != Number_of_Enemies) {
-            //throw exception
+            throw new IllegalArgumentException();
         }
         for (int dexterity : Dexterity_Enemy_Adds) {
             if (dexterity < 0) {
-                //throw exception
+                throw new IllegalArgumentException();
             }
         }
         if (Weak_Enemy_Applies.size() != Number_of_Enemies) {
-            //throw exception
+            throw new IllegalArgumentException();
         }
         for (int weak : Weak_Enemy_Applies) {
             if (weak < 0) {
-                //throw exception
+                throw new IllegalArgumentException();
             }
         }
         if (Vulnerable_Enemy_Applies.size() != Number_of_Enemies) {
-            //throw exception
+            throw new IllegalArgumentException();
         }
         for (int vulnerable: Vulnerable_Enemy_Applies) {
-            if (vulnerable < 0) { 
-                //throw exception
+            if (vulnerable < 0) {
+                throw new IllegalArgumentException();
             }
         }
         if (Frail_Enemy_Applies.size() != Number_of_Enemies) {
-            //throw exception
+            throw new IllegalArgumentException();
         }
         for (int frail : Frail_Enemy_Applies) {
             if (frail < 0) {
-                //throw exception
+                throw new IllegalArgumentException();
             }
         }
         if (Weak_Enemy_Has.size() != Number_of_Enemies) {
-            //throw exception
+            throw new IllegalArgumentException();
         }
         for (int weak : Weak_Enemy_Has) {
             if (weak < 0) {
-                //throw exception
+                throw new IllegalArgumentException();
             }
         }
         if (Vulnerable_Enemy_Has.size() != Number_of_Enemies) {
-            //throw exception
+            throw new IllegalArgumentException();
         }
         for (int vulnerabe : Vulnerable_Enemy_Has) {
             if (vulnerabe < 0) {
-                //throw exception
+                throw new IllegalArgumentException();
             }
         }
     }
@@ -290,7 +291,7 @@ public class State {
 
     public void remove_potion(String potion_to_remove) {
         if (!Potions.contains(potion_to_remove)) {
-            //throw Exception
+            throw new IllegalArgumentException();
         }
         Potions.remove(potion_to_remove);
         validate_public_fields();
@@ -298,7 +299,7 @@ public class State {
 
     public void add_potion(String potion_to_add) {
         if (!Potion_Encyclopedia.dict.containsKey(potion_to_add)) {
-            //throw exception
+            throw new IllegalArgumentException();
         }
         Potions.add(potion_to_add);
         validate_public_fields();
@@ -311,7 +312,7 @@ public class State {
 
     public void remove_card(String card_to_remove) {
         if (!Cards.contains(card_to_remove)) {
-            //throw Exception
+            throw new IllegalArgumentException();
         }
         Cards.remove(card_to_remove);
         validate_public_fields();
@@ -319,7 +320,7 @@ public class State {
 
     public void add_card(String card_to_add) {
         if (!Card_Encyclopedia.dict.containsKey(card_to_add)) {
-            //throw exception
+            throw new IllegalArgumentException();
         }
         Cards.add(card_to_add);
         validate_public_fields();
@@ -424,13 +425,13 @@ public class State {
 
     public void remove_enemy(String enemy_to_remove) {
         if (!Enemies.contains(enemy_to_remove)) {
-            //throw exception
+            throw new IllegalArgumentException();
         }
         int index = Enemies.indexOf(enemy_to_remove);
         Enemies.remove(enemy_to_remove);
         Number_of_Enemies -= 1;
         if (Number_of_Enemies < 0) {
-            //throw exception
+            throw new IllegalArgumentException();
         }
         Enemy_Health_List.remove(index);
         Damage_Enemy_Inflicts.remove(index);
@@ -445,7 +446,7 @@ public class State {
 
     public void add_enemy(String enemy_to_add) {
         if (!Enemy_Encyclopedia.dict.containsKey(enemy_to_add)) {
-            //throw exception
+            throw new IllegalArgumentException();
         }
         ++Number_of_Enemies;
         add_enemy(Enemy_Encyclopedia.dict.get(enemy_to_add));
@@ -453,12 +454,13 @@ public class State {
     }
 
     public List<String> get_enemies() {
+
         return Enemies;
     }
 
     public void set_enemy_health(String enemy, int health_to_add) {
         if (!Enemies.contains(enemy)) {
-            //throw exception
+            throw new IllegalArgumentException();
         }
         int index = Enemies.indexOf(enemy);
         Enemy_Health_List.set(index, Enemy_Health_List.get(index) + health_to_add);
@@ -467,7 +469,7 @@ public class State {
 
     public int get_enemy_health(String enemy) {
         if (!Enemies.contains(enemy)) {
-            //throw exception
+            throw new IllegalArgumentException();
         }
         int index = Enemies.indexOf(enemy);
         return Enemy_Health_List.get(index);
@@ -475,7 +477,7 @@ public class State {
 
     public void set_enemy_damage(String enemy, int damage) {
         if (!Enemies.contains(enemy)) {
-            //throw exception
+            throw new IllegalArgumentException();
         }
         int index = Enemies.indexOf(enemy);
         Damage_Enemy_Inflicts.set(index, damage);
@@ -484,7 +486,7 @@ public class State {
 
     public int get_enemy_damage(String enemy) {
         if (!Enemies.contains(enemy)) {
-            //throw exception
+            throw new IllegalArgumentException();
         }
         int index = Enemies.indexOf(enemy);
         return Damage_Enemy_Inflicts.get(index);
@@ -492,7 +494,7 @@ public class State {
 
     public void set_enemy_block(String enemy, int block) {
         if (!Enemies.contains(enemy)) {
-            //throw exception
+            throw new IllegalArgumentException();
         }
         int index = Enemies.indexOf(enemy);
         Block_Enemy_Will_Add.set(index, Block_Enemy_Will_Add.get(index) + block);
@@ -501,7 +503,7 @@ public class State {
 
     public int get_enemy_block(String enemy) {
         if (!Enemies.contains(enemy)) {
-            //throw exception
+            throw new IllegalArgumentException();
         }
         int index = Enemies.indexOf(enemy);
         return Block_Enemy_Will_Add.get(index);
@@ -509,7 +511,7 @@ public class State {
 
     public void set_enemy_strength(String enemy, int strength) {
         if (!Enemies.contains(enemy)) {
-            //throw exception
+            throw new IllegalArgumentException();
         }
         int index = Enemies.indexOf(enemy);
         Strengths_Enemy_Adds.set(index, Strengths_Enemy_Adds.get(index) + strength);
@@ -518,7 +520,7 @@ public class State {
 
     public int get_enemy_strength(String enemy) {
         if (!Enemies.contains(enemy)) {
-            //throw exception
+            throw new IllegalArgumentException();
         }
         int index = Enemies.indexOf(enemy);
         return Strengths_Enemy_Adds.get(index);
@@ -526,7 +528,7 @@ public class State {
 
     public void set_enemy_dexterity(String enemy, int dexterity) {
         if (!Enemies.contains(enemy)) {
-            //throw exception
+            throw new IllegalArgumentException();
         }
         int index = Enemies.indexOf(enemy);
         Dexterity_Enemy_Adds.set(index, Dexterity_Enemy_Adds.get(index) + dexterity);
@@ -535,7 +537,7 @@ public class State {
 
     public int get_enemy_dexterity(String enemy) {
         if (!Enemies.contains(enemy)) {
-            //throw exception
+            throw new IllegalArgumentException();
         }
         int index = Enemies.indexOf(enemy);
         return Dexterity_Enemy_Adds.get(index);
@@ -543,7 +545,7 @@ public class State {
 
     public void set_weak_enemy_applies(String enemy, int weak) {
         if (!Enemies.contains(enemy)) {
-            //throw exception
+            throw new IllegalArgumentException();
         }
         int index = Enemies.indexOf(enemy);
         Weak_Enemy_Applies.set(index, weak);
@@ -552,7 +554,7 @@ public class State {
 
     public int get_weak_enemy_applies(String enemy) {
         if (!Enemies.contains(enemy)) {
-            //throw exception
+            throw new IllegalArgumentException();
         }
         int index = Enemies.indexOf(enemy);
         return Weak_Enemy_Applies.get(index);
@@ -560,7 +562,7 @@ public class State {
 
     public void set_vulnerable_enemy_applies(String enemy, int vulnerabe) {
         if (!Enemies.contains(enemy)) {
-            //throw exception
+            throw new IllegalArgumentException();
         }
         int index = Enemies.indexOf(enemy);
         Vulnerable_Enemy_Applies.set(index, vulnerabe);
@@ -569,7 +571,7 @@ public class State {
 
     public int get_vulnerable_enemy_applies(String enemy) {
         if (!Enemies.contains(enemy)) {
-            //throw exception
+            throw new IllegalArgumentException();
         }
         int index = Enemies.indexOf(enemy);
         return Vulnerable_Enemy_Applies.get(index);
@@ -577,7 +579,7 @@ public class State {
 
     public void set_vulnerable_enemy_has(String enemy, int vulnerabe) {
         if (!Enemies.contains(enemy)) {
-            //throw exception
+            throw new IllegalArgumentException();
         }
         int index = Enemies.indexOf(enemy);
         Vulnerable_Enemy_Has.set(index, Vulnerable_Enemy_Has.get(index) + vulnerabe);
@@ -594,7 +596,7 @@ public class State {
 
     public void set_weak_enemy_has(String enemy, int weak) {
         if (!Enemies.contains(enemy)) {
-            //throw exception
+            throw new IllegalArgumentException();
         }
         int index = Enemies.indexOf(enemy);
         Weak_Enemy_Has.set(index, Weak_Enemy_Has.get(index) + weak);
@@ -603,7 +605,7 @@ public class State {
 
     public int get_weak_enemy_has(String enemy) {
         if (!Enemies.contains(enemy)) {
-            //throw exception
+            throw new IllegalArgumentException();
         }
         int index = Enemies.indexOf(enemy);
         return Weak_Enemy_Has.get(index);
