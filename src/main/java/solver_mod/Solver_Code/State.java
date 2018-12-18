@@ -18,6 +18,7 @@ import com.megacrit.cardcrawl.powers.AbstractPower;
 public class State {
 
     public int Self_Health = 0;
+    public int Max_Health = AbstractDungeon.player.maxHealth;
     public List<String> Potions = new ArrayList<String>();
     public List<String> Cards = new ArrayList<String>();
     public int Current_Block = 0;
@@ -274,6 +275,10 @@ public class State {
                 throw new IllegalArgumentException();
             }
         }
+    }
+
+    public int get_max_health() {
+        return Max_Health;
     }
 
     public void set_self_health(int health_to_add) {
