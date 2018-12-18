@@ -14,6 +14,11 @@ import Enemy;
 import Potion_Encyclopedia;
 import Card_Encyclopedia;
 import Enemy_Encyclopedia;
+import com.megacrit.cardcrawl.cards.AbstractCard;
+import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
+import com.megacrit.cardcrawl.monsters.AbstractMonster;
+import com.megacrit.cardcrawl.potions.AbstractPotion;
+import com.megacrit.cardcrawl.powers.AbstractPower;
 
 public class State {
 
@@ -42,32 +47,61 @@ public class State {
 
     public void initialise() {
         //user attributes
-        Self_Health = Player.health();
-        Current_Block = Player.block();
-        Energy = Player.energy();
-        Potions = Player.potions();
-        Cards = Player.cards();
-        Strength = Player.Strength();
-        Dexterity = Player.Dexterity();
-        Weak = Player.Weak();
-        Vulnerable = Player.Vulnerable();
-
-        //enemy attributes
-        Number_of_Enemies = 0;
-        for (int i = 0; i < Number_of_Enemies; i++) {
-            Enemies.add();
-            Enemy_Health_List.add();
-            Damage_Enemy_Inflicts.add();
-            Block_Enemy_Will_Add.add();
-            Strengths_Enemy_Adds.add();
-            Dexterity_Enemy_Adds.add();
-            Weak_Enemy_Applies.add();
-            Vulnerable_Enemy_Applies.add();
-            Frail_Enemy_Applies.add();
-            Weak_Enemy_Has.add();
-            Vulnerable_Enemy_Has.add();
+        Self_Health = AbstractDungeon.player.currentHealth;
+        Current_Block = AbstractDungeon.player.currentBlock;
+        Energy = AbstractDungeon.player.energy.energy;
+        for (AbstractPotion p : AbstractDungeon.player.potions) {
+            Potions.add(p.name);
+        }
+        for (AbstractCard c : AbstractDungeon.player.hand.group) {
+            Cards.add(c.name);
+        }
+        Strength = 0;
+        Dexterity = 0;
+        Weak = 0;
+        Vulnerable = 0;
+        for (AbstractPower power : AbstractDungeon.player.powers) {
+            if (power.ID.equals("Strength")) {
+                Strength = power.amount;
+            } else if (power.ID.equals("Dexterity")) {
+                Dexterity = power.amount;
+            } else if (power.ID.equals("Weakened")) {
+                Weak = power.amount;
+            } else if (power.ID.equals("Vulnerable")) {
+                Vulnerable = power.amount;
+            }
         }
 
+        //enemy attributes
+        List<AbstractMonster> monsters = AbstractDungeon.getCurrRoom().monsters.monsters;
+        Number_of_Enemies = monsters.size();
+        
+        for (AbstractMonster m : monsters) {
+            add_enemy(m);
+        }
+        // initialize encyclopedias
+    }
+    
+    private void add_enemy(AbstractMonster enemy) {
+        Enemies.add(enemy.name);
+        Enemy_Health_List.add(enemy.currentHealth);
+        Damage_Enemy_Inflicts.add();
+        Block_Enemy_Will_Add.add();
+        Strengths_Enemy_Adds.add();
+        Dexterity_Enemy_Adds.add();
+        Weak_Enemy_Applies.add();
+        Vulnerable_Enemy_Applies.add();
+        Frail_Enemy_Applies.add();
+        int weak = 0, vulnerable = 0;
+        for (AbstractPower power : enemy.powers) {
+            if (power.ID.equals("Weakened")) {
+                weak = power.amount;
+            } else if (power.ID.equals("Vulnerable")) {
+                vulnerable = power.amount;
+            }
+        }
+        Weak_Enemy_Has.add(weak);
+        Vulnerable_Enemy_Has.add(weak);
     }
 
 
@@ -361,16 +395,8 @@ public class State {
         if (!Enemy_Encyclopedia.contains(enemy_to_add)) {
             //throw exception
         }
-        Enemies.add(enemy_to_add);
-        Number_of_Enemies += 1;
-        Enemy_Health_List.add();
-        Damage_Enemy_Inflicts.add();
-        Block_Enemy_Will_Add.add();
-        Strengths_Enemy_Adds.add();
-        Dexterity_Enemy_Adds.add();
-        Weak_Enemy_Applies.add();
-        Vulnerable_Enemy_Applies.add();
-        Frail_Enemy_Applies.add();
+        ++Number_of_Enemies;
+        add_enemy(Enemy_Encyclopedia.get(enemy_to_add));
         validate_public_fields();
     }
 

@@ -61,7 +61,7 @@ public class SolverMod implements PostDungeonInitializeSubscriber,
                 Settings.HEIGHT / 2.0f, r);
         // gather all the possible targets in one list
         List<AbstractCreature> creatures =
-                new ArrayList<AbstractCreature>(AbstractDungeon.getMonsters().monsters);
+                new ArrayList<AbstractCreature>(AbstractDungeon.getCurrRoom().monsters.monsters);
         creatures.add(AbstractDungeon.player);
         
         // fetch cards and potions

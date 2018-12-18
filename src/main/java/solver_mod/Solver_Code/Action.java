@@ -7,10 +7,6 @@ If valid, the new state is calculated and returned.
 
 import java.util.*;
 
-import com.sun.org.apache.xerces.internal.utils.XMLSecurityPropertyManager.State;
-
-import solver_mod.Solver_Code.*;
-
 public class Action {
     public Map<String, String> Potion_Dict = new HashMap<String, String>();
     public Map<String, String> Card_Dict = new HashMap<String, String>();
