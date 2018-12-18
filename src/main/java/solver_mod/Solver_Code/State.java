@@ -18,8 +18,8 @@ import com.megacrit.cardcrawl.powers.AbstractPower;
 public class State {
 
     public int Self_Health = 0;
-    public List<String> Potions = new ArrayList();
-    public List<String> Cards = new ArrayList();
+    public List<String> Potions = new ArrayList<String>();
+    public List<String> Cards = new ArrayList<String>();
     public int Current_Block = 0;
     public int Energy = 0;
     public int Strength = 0;
@@ -29,17 +29,17 @@ public class State {
     public int Frail = 0;
 
     public int Number_of_Enemies = 0;
-    public List<String> Enemies = new ArrayList();
-    public List<Integer> Enemy_Health_List = new ArrayList();
-    public List<Integer> Damage_Enemy_Inflicts = new ArrayList();
-    public List<Integer> Block_Enemy_Will_Add = new ArrayList();
-    public List<Integer> Strengths_Enemy_Adds = new ArrayList();
-    public List<Integer> Dexterity_Enemy_Adds = new ArrayList();
-    public List<Integer> Weak_Enemy_Applies = new ArrayList();
-    public List<Integer> Vulnerable_Enemy_Applies = new ArrayList();
-    public List<Integer> Frail_Enemy_Applies = new ArrayList();
-    public List<Integer> Weak_Enemy_Has = new ArrayList();
-    public List<Integer> Vulnerable_Enemy_Has = new ArrayList();
+    public List<String> Enemies = new ArrayList<String>();
+    public List<Integer> Enemy_Health_List = new ArrayList<Integer>();
+    public List<Integer> Damage_Enemy_Inflicts = new ArrayList<Integer>();
+    public List<Integer> Block_Enemy_Will_Add = new ArrayList<Integer>();
+    public List<Integer> Strengths_Enemy_Adds = new ArrayList<Integer>();
+    public List<Integer> Dexterity_Enemy_Adds = new ArrayList<Integer>();
+    public List<Integer> Weak_Enemy_Applies = new ArrayList<Integer>();
+    public List<Integer> Vulnerable_Enemy_Applies = new ArrayList<Integer>();
+    public List<Integer> Frail_Enemy_Applies = new ArrayList<Integer>();
+    public List<Integer> Weak_Enemy_Has = new ArrayList<Integer>();
+    public List<Integer> Vulnerable_Enemy_Has = new ArrayList<Integer>();
 
     public State deep_copy(State current_state) {
         State new_state = new State();
@@ -607,7 +607,13 @@ public class State {
 
     public double score() {
         double score = self_health_score() + number_of_potions_Score();
+        for (String potion : Potions) {
+            score += effect_of_potion_Score(potion);
+        }
         score += number_of_cards_score();
+        for (String card : Cards) {
+            score += effect_of_card_score(card);
+        }
         score += current_block_score() + current_energy_score() + current_strength_score();
         score += current_dexterity_score() + current_vulnerable_score() + current_weak_score();
         score += number_of_enemies_score();
@@ -634,11 +640,17 @@ public class State {
         return (Potions.size()*2);
     }
 
+    private double effect_of_potion_Score(String potion) {
+        return 0.0;
+    }
 
     private double number_of_cards_score() {
         return (Cards.size()*2);
     }
 
+    private double effect_of_card_score(String card) {
+        return 0.0;
+    }
 
     private double current_block_score() {
         return Current_Block*3;
