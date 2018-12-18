@@ -1,4 +1,5 @@
-package solver_mod.Solver_Code;/*
+package solver_mod.Solver_Code;
+/*
 This class takes in an action the user intends to perform.
 The action is checked to be valid.
 If valid, the new state is calculated and returned.

@@ -531,18 +531,142 @@ public class State {
         return Weak_Enemy_Has.get(index);
     }
 
-    public static double score() {
-        double score = 0;
-        //score = f(self_health) + f(potions) + f(number_of_cards) + f(max_damage dooable) + 
-        // + f(max_block_possible) + f(current_block) + f(number_of_enemies) + 
-        //sum(f(importance of each enemy)) + sum(f(Enemy_Health)) + sum(f(Damage_Enemy_Inflicts))
-        // + sum(f(Block_Enemy_Will_Add)) + sum(f(Strength_Enemy_Adds)) + 
-        //sum(f(Dexterity_Enemy_Adds)) + sum(f(Weak_Enemy_Applies)) + sum(f(Frail_Enemy_Applies))
-        // + sum(f(Vulnerable_Enemy_Applies))
-        if (Self_Health <= 0) {
-            score += (double)Integer.MAX_VALUE;
+    public double score() {
+        double score = self_health_score() + number_of_potions_Score();
+        for (String potion : Potions) {
+            score += effect_of_potion_Score(potion);
+        }
+        score += number_of_cards_score();
+        for (String card : Cards) {
+            score += effect_of_card_score(card);
+        }
+        score += current_block_score() + current_energy_score() + current_strength_score();
+        score += current_dexterity_score() + current_vulnerable_score() + current_weak_score();
+        score += number_of_enemies_score();
+        for (String enemy : Enemies) {
+            score += enemy_rank_score(enemy) + enemy_block_score(enemy) + enemy_damage_score(enemy);
+            score += enemy_dexterity_Score(enemy) + enemy_frail_applied_score(enemy);
+            score += enemy_health_score(enemy) + enemy_strength_score(enemy);
+            score += enemy_vulnerable_applied_score(enemy) + enemy_vulnerable_score(enemy);
+            score += enemy_weak_applied_score(enemy) + enemy_weak_score(enemy);
         }
         return score;
     }
 
+    private double self_health_score() {
+        if (Self_Health == 0) {
+            return -(double)Integer.MAX_VALUE;
+        }
+        else {
+            return Self_Health*5;
+        }
+    }
+
+    private double number_of_potions_Score() {
+        return (Potions.size()*2);
+    }
+
+    private double effect_of_potion_Score(String potion) {
+        return 0.0;
+    }
+
+    private double number_of_cards_score() {
+        return (Cards.size()*2);
+    }
+
+    private double effect_of_card_score(String card) {
+        return 0.0;
+    }
+
+    private double current_block_score() {
+        return Current_Block*3;
+    }
+
+    private double current_energy_score() {
+        return Energy*2;
+    }
+
+    private double current_strength_score() {
+        return Strength*2;
+    }
+
+    private double current_dexterity_score() {
+        return Dexterity*2;
+    }
+    
+    private double current_vulnerable_score() {
+        return -Vulnerable*2;
+    }
+
+    private double current_weak_score() {
+        return -Weak*2;
+    }
+
+    private double number_of_enemies_score() {
+        return -Enemies.size()*2;
+    }
+
+    private double enemy_rank_score(String enemy) {
+        return 0.0;
+    }
+
+    private double enemy_health_score(String enemy) {
+        index = Enemy_Health_List.indexOf(enemy);
+        health = Enemy_Health_List.get(index);
+        return -health*2;
+    }
+
+    private double enemy_damage_score(String enemy) {
+        index = Damage_Enemy_Inflicts.indexOf(enemy);
+        damage = Damage_Enemy_Inflicts.get(index);
+        return -damage*2;
+    }
+
+    private double enemy_block_score(String enemy) {
+        index = Block_Enemy_Will_Add.indexOf(enemy);
+        block = Block_Enemy_Will_Add.get(index);
+        return -block*2;
+    }
+
+    private double enemy_strength_score(String enemy) {
+        index = Strengths_Enemy_Adds.indexOf(enemy);
+        strength = Strengths_Enemy_Adds.get(index);
+        return -strength*2;
+    }
+
+    private double enemy_dexterity_Score(String enemy) {
+        index = Dexterity_Enemy_Adds.indexOf(enemy);
+        dexterity = Dexterity_Enemy_Adds.get(index);
+        return -dexterity*2;
+    }
+
+    private double enemy_weak_applied_score(String enemy) {
+        index = Weak_Enemy_Applies.indexOf(enemy);
+        weak = Weak_Enemy_Applies.get(index);
+        return -weak*2;
+    }
+
+    private double enemy_vulnerable_applied_score(String enemy) {
+        index = Vulnerable_Enemy_Applies.indexOf(enemy);
+        vulnerable = Vulnerable_Enemy_Applies.get(index);
+        return -vulnerable*2;
+    }
+
+    private double enemy_frail_applied_score(String enemy) {
+        index = Frail_Enemy_Applies.indexOf(enemy);
+        frail = Frail_Enemy_Applies.get(index);
+        return -frail*2;
+    }
+
+    private double enemy_weak_score(String enemy) {
+        index = Weak_Enemy_Has.indexOf(enemy);
+        weak = Weak_Enemy_Has.get(index);
+        return weak*2;
+    }
+
+    private double enemy_vulnerable_score(String enemy) {
+        index = Vulnerable_Enemy_Has.indexOf(enemy);
+        vulnerable = Vulnerable_Enemy_Has.get(index);
+        return vulnerable*2;
+    }
 }
