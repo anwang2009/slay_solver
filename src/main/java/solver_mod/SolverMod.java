@@ -1,6 +1,6 @@
 package solver_mod;
 
-import basemod.interfaces.PostDrawSubscriber;
+import basemod.interfaces.*;
 import com.evacipated.cardcrawl.modthespire.lib.SpireInitializer;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.core.AbstractCreature;
@@ -11,9 +11,6 @@ import com.megacrit.cardcrawl.relics.AbstractRelic;
 import com.megacrit.cardcrawl.rooms.AbstractRoom;
 
 import basemod.BaseMod;
-import basemod.interfaces.PostBattleSubscriber;
-import basemod.interfaces.PostDungeonInitializeSubscriber;
-import basemod.interfaces.PostExhaustSubscriber;
 import solver_mod.Solver_Code.Action;
 import solver_mod.Solver_Code.State;
 
@@ -26,7 +23,7 @@ import static com.megacrit.cardcrawl.dungeons.AbstractDungeon.returnRandomNonCam
 @SpireInitializer
 public class SolverMod implements PostExhaustSubscriber,
         PostBattleSubscriber, PostDungeonInitializeSubscriber,
-        PostDrawSubscriber, OnRefreshHandSubscriber {
+        PostDrawSubscriber, PreTurnSubscriber {
 
     private int count, totalCount;
 
@@ -63,13 +60,16 @@ public class SolverMod implements PostExhaustSubscriber,
 
     @Override
     public void receivePostDraw(AbstractCard c) {
-        AbstractRelic r = returnRandomNonCampfireRelic(AbstractRelic.RelicTier.COMMON);
-        AbstractDungeon.getCurrRoom().spawnRelicAndObtain(Settings.WIDTH / 2.0f,
-                Settings.HEIGHT / 2.0f, r);
+        //AbstractRelic r = returnRandomNonCampfireRelic(AbstractRelic.RelicTier.COMMON);
+        //AbstractDungeon.getCurrRoom().spawnRelicAndObtain(Settings.WIDTH / 2.0f,
+         //       Settings.HEIGHT / 2.0f, r);
     }
     
     @Override
-    public void receiveOnRefreshHand(AbstractRelic r) {
+    public void receivePreTurn() {
+        AbstractRelic r = returnRandomNonCampfireRelic(AbstractRelic.RelicTier.COMMON);
+        AbstractDungeon.getCurrRoom().spawnRelicAndObtain(Settings.WIDTH / 2.0f,
+                Settings.HEIGHT / 2.0f, r);
         // gather all the possible targets in one list
         List<AbstractCreature> creatures =
                 new ArrayList<AbstractCreature>(AbstractDungeon.getMonsters().monsters);
