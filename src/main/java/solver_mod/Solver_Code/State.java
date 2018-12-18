@@ -9,9 +9,6 @@ Enemy_Encyclopedia
 */
 
 import java.util.*;
-import Potion_Encyclopedia;
-import Card_Encyclopedia;
-import Enemy_Encyclopedia;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
@@ -54,7 +51,7 @@ public class State {
         }
 
         for (String card : Cards) {
-            new_state.add_card(potion);
+            new_state.add_card(card);
         }
 
         new_state.set_block(Current_Block);
@@ -168,7 +165,7 @@ public class State {
             //throw exception
         }
         for (String potion : Potions) {
-            if (!Potion_Encyclopedia.contains(potion)) {
+            if (!Potion_Encyclopedia.dict.containsKey(potion)) {
                 //throw exception
             }
         }
@@ -176,7 +173,7 @@ public class State {
             //throw exception
         }
         for (String card : Cards) {
-            if (!Card_Encyclopedia.contains(card)) {
+            if (!Card_Encyclopedia.dict.containsKey(card)) {
                 //throw exception
             }
         }
@@ -188,7 +185,7 @@ public class State {
             //throw exception
         }
         for (String enemy : Enemies) {
-            if (!Enemy_Encyclopedia.contains(enemy)) {
+            if (!Enemy_Encyclopedia.dict.containsKey(enemy)) {
                 //throw exception
             }
         }
@@ -296,7 +293,7 @@ public class State {
     }
 
     public void add_potion(String potion_to_add) {
-        if (!Potion_Encyclopedia.contains(potion_to_add)) {
+        if (!Potion_Encyclopedia.dict.containsKey(potion_to_add)) {
             //throw exception
         }
         Potions.add(potion_to_add);
@@ -317,7 +314,7 @@ public class State {
     }
 
     public void add_card(String card_to_add) {
-        if (!Card_Encyclopedia.contains(card_to_add)) {
+        if (!Card_Encyclopedia.dict.containsKey(card_to_add)) {
             //throw exception
         }
         Cards.add(card_to_add);
@@ -416,7 +413,7 @@ public class State {
     }
 
     public int get_frail() {
-        to_return = Frail;
+        int to_return = Frail;
         return to_return;
     }
 
@@ -443,11 +440,11 @@ public class State {
     }
 
     public void add_enemy(String enemy_to_add) {
-        if (!Enemy_Encyclopedia.contains(enemy_to_add)) {
+        if (!Enemy_Encyclopedia.dict.containsKey(enemy_to_add)) {
             //throw exception
         }
         ++Number_of_Enemies;
-        add_enemy(Enemy_Encyclopedia.get(enemy_to_add));
+        add_enemy(Enemy_Encyclopedia.dict.get(enemy_to_add));
         validate_public_fields();
     }
 
