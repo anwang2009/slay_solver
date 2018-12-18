@@ -41,7 +41,11 @@ public class State {
     public List<Integer> Weak_Enemy_Has = new ArrayList<Integer>();
     public List<Integer> Vulnerable_Enemy_Has = new ArrayList<Integer>();
 
-    public State deep_copy(State current_state) {
+    Solver() {
+        initialise();
+    }
+
+    public State deep_copy() {
         State new_state = new State();
 
         new_state.set_self_health(Self_Health);

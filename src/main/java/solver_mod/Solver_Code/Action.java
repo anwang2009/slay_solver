@@ -24,21 +24,22 @@ public class Action {
             //throw exception
         }
         //1) remove potion from state
-        current_state.remove_potion(potion);
+        state_to_use.remove_potion(potion);
         //2) change player attributes in state
         //3) change enemy attributes in state
 
-        return current_state;
+        return state_to_use;
     }
 
     public State use_a_card(String card, String target, State current_state) {
+        state_to_use = current_state.deep_copy();
         if (!Card_Dict.containsKey(card)) {
             //throw exception
         }
         //1) remove card from state
-        current_state.remove_card(card);
+        state_to_use.remove_card(card);
         //2) remove the energy the card costs from the state
-        current_state.set_energy(-card.energy);
+        state_to_use.set_energy(-card.energy);
         //3) change player attributes in state
         //4) change enemy attributes in state
 
@@ -46,6 +47,7 @@ public class Action {
     }
 
     public State end_turn(State current_state) {
-        return current_state;
+        state_to_use = current_state.deep_copy();
+        return state_to_use;
     }
 }
