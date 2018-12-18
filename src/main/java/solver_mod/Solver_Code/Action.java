@@ -14,23 +14,9 @@ public class Action {
     //ppulate the dictionaries
     //in future iterations these will be classes of their own
 
-    public State newState(State current_state) {
-        //what does the user want to do?
-        String potion_name = null;
-        String card_name = null;
-        String target_name = null;
-        
-        //1) use a potion
-        current_state = use_a_potion(potion_name, target_name, current_state);
-        //2) use a card
-        current_state = use_a_card(card_name, target_name, current_state);
-        //3) end turn
-        current_state = end_turn(current_state);
-        //return current_state
-        return current_state;
-    }
 
     public State use_a_potion(String potion, String target, State current_state){
+        state_to_use = current_state.deep_copy();
         if (!Potion_Dict.containsKey(potion)) {
             //throw exception
         }
