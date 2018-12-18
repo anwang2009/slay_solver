@@ -3,6 +3,8 @@ package solver_mod;
 import basemod.interfaces.*;
 import com.evacipated.cardcrawl.modthespire.lib.SpireInitializer;
 import com.megacrit.cardcrawl.cards.AbstractCard;
+import com.megacrit.cardcrawl.cards.CardGroup;
+import com.megacrit.cardcrawl.cards.CardGroup.CardGroupType;
 import com.megacrit.cardcrawl.core.AbstractCreature;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
@@ -21,11 +23,11 @@ import java.util.List;
 import static com.megacrit.cardcrawl.dungeons.AbstractDungeon.returnRandomNonCampfireRelic;
 
 @SpireInitializer
-public class SolverMod implements PostExhaustSubscriber,
-        PostBattleSubscriber, PostDungeonInitializeSubscriber,
-        PostDrawSubscriber, PreTurnSubscriber {
+public class SolverMod implements PostDungeonInitializeSubscriber,
+        PostDrawSubscriber, PreTurnSubscriber, OnStartBattleSubscriber {
 
     private int count, totalCount;
+    private CardGroup cards = null;
 
     private void resetCounts() {
         totalCount = count = 0;
@@ -38,19 +40,6 @@ public class SolverMod implements PostExhaustSubscriber,
 
     public static void initialize() {
         new SolverMod();
-    }
-
-    @Override
-    public void receivePostExhaust(AbstractCard c) {
-        count++;
-        totalCount++;
-    }
-
-    @Override
-    public void receivePostBattle(AbstractRoom r) {
-        System.out.println(count + " cards were exhausted this battle, " +
-                totalCount + " cards have been exhausted so far this act.");
-        count = 0;
     }
 
     @Override
@@ -111,5 +100,10 @@ public class SolverMod implements PostExhaustSubscriber,
             }
         }
         State.setState(chosenState); // or some other way to "pick" this action/state
+    }
+
+    @Override
+    public void receiveOnBattleStart(AbstractRoom abstractRoom) {
+        cards = new CardGroup(AbstractDungeon.player.masterDeck, CardGroupType.MASTER_DECK);
     }
 }
