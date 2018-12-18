@@ -29,6 +29,7 @@ public class State {
     public static int Dexterity = 0;
     public static int Weak = 0;
     public static int Vulnerable = 0;
+    public static int Frail = 0;
 
     public static int Number_of_Enemies = 0;
     public static List<String> Enemies = new ArrayList();
@@ -42,6 +43,35 @@ public class State {
     public static List<Integer> Frail_Enemy_Applies = new ArrayList();
     public static List<Integer> Weak_Enemy_Has = new ArrayList();
     public static List<Integer> Vulnerable_Enemy_Has = new ArrayList();
+
+    public State deep_copy(State current_state) {
+        State new_state = new State();
+
+        new_state.set_self_health(Self_Health);
+
+        for (String potion : Potions) {
+            new_state.add_potion(potion);
+        }
+
+        for (String card : Cards) {
+            new_state.add_card(potion);
+        }
+
+        new_state.set_block(Current_Block);
+        new_state.set_energy(Energy);
+        new_state.set_strength(Strength);
+        new_state.set_dexterity(Dexterity);
+        new_state.set_vulnerable(Vulnerable);
+        new_state.set_weak(Weak);
+        new_state.set_frail(Frail);
+
+        for (String enemy : Enemies) {
+            new_state.add_enemy(enemy);
+        }
+
+        return new_state;
+
+    }
 
     public void initialise() {
         //user attributes
@@ -61,12 +91,18 @@ public class State {
         for (AbstractPower power : AbstractDungeon.player.powers) {
             if (power.ID.equals("Strength")) {
                 Strength = power.amount;
-            } else if (power.ID.equals("Dexterity")) {
+            } 
+            else if (power.ID.equals("Dexterity")) {
                 Dexterity = power.amount;
-            } else if (power.ID.equals("Weakened")) {
+            } 
+            else if (power.ID.equals("Weakened")) {
                 Weak = power.amount;
-            } else if (power.ID.equals("Vulnerable")) {
+            } 
+            else if (power.ID.equals("Vulnerable")) {
                 Vulnerable = power.amount;
+            }
+            else if (power.ID.equals("Frail")) {
+                Frail = power.amount;
             }
         }
 
@@ -123,6 +159,9 @@ public class State {
             //throw exception
         }
         if (Vulnerable < 0) {
+            //throw exception
+        }
+        if (Frail < 0) {
             //throw exception
         }
         if (Potions.size() < 0) {
@@ -367,6 +406,20 @@ public class State {
         int to_return =  Vulnerable;
         return to_return;
     }
+
+    public void set_frail(int frail_to_add) {
+        Frail += frail_to_add;
+        if (Frail < 0) {
+            Frail = 0;
+        }
+        validate_public_fields();
+    }
+
+    public int get_frail() {
+        to_return = Frail;
+        return to_return;
+    }
+
 
     public void remove_enemy(String enemy_to_remove) {
         if (!Enemies.contains(enemy_to_remove)) {
