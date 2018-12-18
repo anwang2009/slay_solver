@@ -9,8 +9,6 @@ Enemy_Encyclopedia
 */
 
 import java.util.*;
-import Player;
-import Enemy;
 import Potion_Encyclopedia;
 import Card_Encyclopedia;
 import Enemy_Encyclopedia;
@@ -637,62 +635,62 @@ public class State {
     }
 
     private double enemy_health_score(String enemy) {
-        index = Enemy_Health_List.indexOf(enemy);
-        health = Enemy_Health_List.get(index);
+        int index = Enemy_Health_List.indexOf(enemy);
+        int health = Enemy_Health_List.get(index);
         return -health*2;
     }
 
     private double enemy_damage_score(String enemy) {
-        index = Damage_Enemy_Inflicts.indexOf(enemy);
-        damage = Damage_Enemy_Inflicts.get(index);
+        int index = Damage_Enemy_Inflicts.indexOf(enemy);
+        int damage = Damage_Enemy_Inflicts.get(index);
         return -damage*2;
     }
 
     private double enemy_block_score(String enemy) {
-        index = Block_Enemy_Will_Add.indexOf(enemy);
-        block = Block_Enemy_Will_Add.get(index);
+        int index = Block_Enemy_Will_Add.indexOf(enemy);
+        int block = Block_Enemy_Will_Add.get(index);
         return -block*2;
     }
 
     private double enemy_strength_score(String enemy) {
-        index = Strengths_Enemy_Adds.indexOf(enemy);
-        strength = Strengths_Enemy_Adds.get(index);
+        int index = Strengths_Enemy_Adds.indexOf(enemy);
+        int strength = Strengths_Enemy_Adds.get(index);
         return -strength*2;
     }
 
     private double enemy_dexterity_Score(String enemy) {
-        index = Dexterity_Enemy_Adds.indexOf(enemy);
-        dexterity = Dexterity_Enemy_Adds.get(index);
+        int index = Dexterity_Enemy_Adds.indexOf(enemy);
+        int dexterity = Dexterity_Enemy_Adds.get(index);
         return -dexterity*2;
     }
 
     private double enemy_weak_applied_score(String enemy) {
-        index = Weak_Enemy_Applies.indexOf(enemy);
-        weak = Weak_Enemy_Applies.get(index);
+        int index = Weak_Enemy_Applies.indexOf(enemy);
+        int weak = Weak_Enemy_Applies.get(index);
         return -weak*2;
     }
 
     private double enemy_vulnerable_applied_score(String enemy) {
-        index = Vulnerable_Enemy_Applies.indexOf(enemy);
-        vulnerable = Vulnerable_Enemy_Applies.get(index);
+        int index = Vulnerable_Enemy_Applies.indexOf(enemy);
+        int vulnerable = Vulnerable_Enemy_Applies.get(index);
         return -vulnerable*2;
     }
 
     private double enemy_frail_applied_score(String enemy) {
-        index = Frail_Enemy_Applies.indexOf(enemy);
-        frail = Frail_Enemy_Applies.get(index);
+        int index = Frail_Enemy_Applies.indexOf(enemy);
+        int frail = Frail_Enemy_Applies.get(index);
         return -frail*2;
     }
 
     private double enemy_weak_score(String enemy) {
-        index = Weak_Enemy_Has.indexOf(enemy);
-        weak = Weak_Enemy_Has.get(index);
+        int index = Weak_Enemy_Has.indexOf(enemy);
+        int weak = Weak_Enemy_Has.get(index);
         return weak*2;
     }
 
     private double enemy_vulnerable_score(String enemy) {
-        index = Vulnerable_Enemy_Has.indexOf(enemy);
-        vulnerable = Vulnerable_Enemy_Has.get(index);
+        int index = Vulnerable_Enemy_Has.indexOf(enemy);
+        int vulnerable = Vulnerable_Enemy_Has.get(index);
         return vulnerable*2;
     }
 }
