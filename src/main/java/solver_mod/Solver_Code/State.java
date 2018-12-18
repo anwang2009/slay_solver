@@ -613,7 +613,6 @@ public class State {
         for (String potion : Potions) {
             score += effect_of_potion_Score(potion);
         }
-        score += number_of_cards_score();
         for (String card : Cards) {
             score += effect_of_card_score(card);
         }
@@ -645,10 +644,6 @@ public class State {
 
     private double effect_of_potion_Score(String potion) {
         return 0.0;
-    }
-
-    private double number_of_cards_score() {
-        return (Cards.size()*2);
     }
 
     private double effect_of_card_score(String card) {
