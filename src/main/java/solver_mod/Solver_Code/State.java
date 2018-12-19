@@ -42,6 +42,7 @@ public class State {
     public List<Integer> Frail_Enemy_Applies = new ArrayList<Integer>();
     public List<Integer> Weak_Enemy_Has = new ArrayList<Integer>();
     public List<Integer> Vulnerable_Enemy_Has = new ArrayList<Integer>();
+    public List<Integer> Poison_Enemy_Has = new ArrayList<Integer>();
 
     State() {
 
@@ -159,14 +160,19 @@ public class State {
             }
         }
         Weak_Enemy_Has.add(weak);
-        Vulnerable_Enemy_Has.add(weak);
+        Vulnerable_Enemy_Has.add(vulnerable);
+        Poison_Enemy_Has.add();
     }
 
 
     public void validate_public_fields() {
-         if (Self_Health < 0) {
+
+        if (Self_Health < 0) {
              throw new IllegalArgumentException();
          }
+        if (Max_Health < 0 || Max_Health < Self_Health) {
+            throw new IllegalArgumentException();
+        }
         if (Current_Block < 0) {
             throw new IllegalArgumentException();
         }
@@ -204,7 +210,6 @@ public class State {
                 throw new IllegalArgumentException();
             }
         }
-
         if (Number_of_Enemies <= 0) {
             throw new IllegalArgumentException();
         }
@@ -291,8 +296,16 @@ public class State {
         if (Vulnerable_Enemy_Has.size() != Number_of_Enemies) {
             throw new IllegalArgumentException();
         }
-        for (int vulnerabe : Vulnerable_Enemy_Has) {
-            if (vulnerabe < 0) {
+        for (int vulnerable : Vulnerable_Enemy_Has) {
+            if (vulnerable < 0) {
+                throw new IllegalArgumentException();
+            }
+        }
+        if (Poison_Enemy_Has.size() != Number_of_Enemies) {
+            throw new IllegalArgumentException();
+        }
+        for (int poison : Poison_Enemy_Has) {
+            if (poison < 0) {
                 throw new IllegalArgumentException();
             }
         }
@@ -475,6 +488,9 @@ public class State {
         Weak_Enemy_Applies.remove(index);
         Vulnerable_Enemy_Applies.remove(index);
         Frail_Enemy_Applies.remove(index);
+        Poison_Enemy_Has.remove(index);
+        Vulnerable_Enemy_Has.remove(index);
+        Weak_Enemy_Has.remove(index);
         validate_public_fields();
     }
 
@@ -488,7 +504,6 @@ public class State {
     }
 
     public List<String> get_enemies() {
-
         return Enemies;
     }
 
@@ -497,7 +512,11 @@ public class State {
             throw new IllegalArgumentException();
         }
         int index = Enemies.indexOf(enemy);
-        Enemy_Health_List.set(index, Enemy_Health_List.get(index) + health_to_add);
+        int health_to_set = Enemy_Health_List.get(index) + health_to_add;
+        if (health_to_set < 0) {
+            health_to_set = 0;
+        }
+        Enemy_Health_List.set(index, health_to_set);
         validate_public_fields();
     }
 
@@ -514,6 +533,9 @@ public class State {
             throw new IllegalArgumentException();
         }
         int index = Enemies.indexOf(enemy);
+        if (damage < 0) {
+            damage = 0;
+        }
         Damage_Enemy_Inflicts.set(index, damage);
         validate_public_fields();
     }
@@ -531,7 +553,11 @@ public class State {
             throw new IllegalArgumentException();
         }
         int index = Enemies.indexOf(enemy);
-        Block_Enemy_Will_Add.set(index, Block_Enemy_Will_Add.get(index) + block);
+        int block_to_set = Block_Enemy_Will_Add.get(index) + block;
+        if (block_to_set < 0) {
+            block_to_set = 0;
+        }
+        Block_Enemy_Will_Add.set(index, block_to_set);
         validate_public_fields();
     }
 
@@ -548,7 +574,11 @@ public class State {
             throw new IllegalArgumentException();
         }
         int index = Enemies.indexOf(enemy);
-        Strengths_Enemy_Adds.set(index, Strengths_Enemy_Adds.get(index) + strength);
+        int strength_to_set = Strengths_Enemy_Adds.get(index) + strength;
+        if (strength_to_set < 0) {
+            strength_to_set = 0;
+        }
+        Strengths_Enemy_Adds.set(index, strength_to_set);
         validate_public_fields();
     }
 
@@ -565,7 +595,11 @@ public class State {
             throw new IllegalArgumentException();
         }
         int index = Enemies.indexOf(enemy);
-        Dexterity_Enemy_Adds.set(index, Dexterity_Enemy_Adds.get(index) + dexterity);
+        int dexterity_to_set = Dexterity_Enemy_Adds.get(index) + dexterity;
+        if (dexterity_to_set < 0) {
+            dexterity_to_set = 0;
+        }
+        Dexterity_Enemy_Adds.set(index, dexterity_to_set);
         validate_public_fields();
     }
 
@@ -582,6 +616,9 @@ public class State {
             throw new IllegalArgumentException();
         }
         int index = Enemies.indexOf(enemy);
+        if (weak < 0) {
+            weak = 0;
+        }
         Weak_Enemy_Applies.set(index, weak);
         validate_public_fields();
     }
@@ -599,6 +636,9 @@ public class State {
             throw new IllegalArgumentException();
         }
         int index = Enemies.indexOf(enemy);
+        if (vulnerabe < 0) {
+            vulnerabe = 0;
+        }
         Vulnerable_Enemy_Applies.set(index, vulnerabe);
         validate_public_fields();
     }
@@ -616,7 +656,11 @@ public class State {
             throw new IllegalArgumentException();
         }
         int index = Enemies.indexOf(enemy);
-        Vulnerable_Enemy_Has.set(index, Vulnerable_Enemy_Has.get(index) + vulnerabe);
+        int vulnerable_to_set = Vulnerable_Enemy_Has.get(index) + vulnerabe;
+        if (vulnerable_to_set < 0) {
+            vulnerable_to_set = 0;
+        }
+        Vulnerable_Enemy_Has.set(index, vulnerable_to_set);
         validate_public_fields();
     }
 
@@ -633,7 +677,11 @@ public class State {
             throw new IllegalArgumentException();
         }
         int index = Enemies.indexOf(enemy);
-        Weak_Enemy_Has.set(index, Weak_Enemy_Has.get(index) + weak);
+        int weak_to_set = Weak_Enemy_Has.get(index) + weak;
+        if (weak_to_set < 0) {
+            weak_to_set = 0;
+        }
+        Weak_Enemy_Has.set(index, weak_to_set);
         validate_public_fields();
     }
 
@@ -643,6 +691,27 @@ public class State {
         }
         int index = Enemies.indexOf(enemy);
         return Weak_Enemy_Has.get(index);
+    }
+
+    public void set_poison_enemy_has(String enemy, int poison_to_add) {
+        if (!Enemies.contains(enemy)) {
+            throw new IllegalArgumentException();
+        }
+        int index = Enemies.indexOf(enemy);
+        int poison_to_set = Poison_Enemy_Has.get(index) + poison_to_add;
+        if (poison_to_set < 0) {
+            poison_to_set = 0;
+        }
+        Poison_Enemy_Has.set(index, poison_to_set);
+        validate_public_fields();
+    }
+
+    public int get_poison_enemy_has(String enemy) {
+        if (!Enemies.contains(enemy)) {
+            throw new IllegalArgumentException();
+        }
+        int index = Enemies.indexOf(enemy);
+        return Poison_Enemy_Has.get(index);
     }
 
     public double score() {
@@ -656,6 +725,7 @@ public class State {
             score += enemy_health_score(enemy) + enemy_strength_score(enemy);
             score += enemy_vulnerable_applied_score(enemy) + enemy_vulnerable_score(enemy);
             score += enemy_weak_applied_score(enemy) + enemy_weak_score(enemy);
+            score += enemy_poison_score(enemy);
         }
         return score;
     }
@@ -763,5 +833,11 @@ public class State {
         int index = Enemies.indexOf(enemy);
         int vulnerable = Vulnerable_Enemy_Has.get(index);
         return vulnerable*2;
+    }
+
+    private double enemy_poison_score(String enemy) {
+        int index = Enemies.indexOf(enemy);
+        int poison = Poison_Enemy_Has.get(index);
+        return poison*2;
     }
 }
