@@ -67,11 +67,16 @@ public class State {
         }
 
         for (String enemy : Enemies) {
-            new_state.add_enemy(enemy);
+            new_state.Enemies.add(enemy);
         }
+        new_state.Enemy_Health_List.addAll(Enemy_Health_List);
+        new_state.Weak_Enemy_Has.addAll(Weak_Enemy_Has);
+        new_state.Vulnerable_Enemy_Has.addAll(Vulnerable_Enemy_Has);
+        new_state.Block_Enemy_Will_Add.addAll(Block_Enemy_Will_Add);
+        new_state.Damage_Enemy_Inflicts.addAll(Damage_Enemy_Inflicts);
+        new_state.Debuff_Enemy_Applies.addAll(Debuff_Enemy_Applies);
 
         return new_state;
-
     }
 
     public void initialise() {
@@ -207,15 +212,15 @@ public class State {
     }
 
     public void remove_potion(AbstractPotion potion_to_remove) {
-        if (!Potions.contains(potion_to_remove)) {
-            throw new IllegalArgumentException();
+        if (!Potion_Encyclopedia.potions.contains(potion_to_remove)) {
+            throw new IllegalArgumentException(potion_to_remove.name);
         }
         Potions.remove(potion_to_remove);
         validate_public_fields();
     }
 
     public void add_potion(AbstractPotion potion_to_add) {
-        if (!Potion_Encyclopedia.dict.containsKey(potion_to_add.name)) {
+        if (!Potion_Encyclopedia.potions.contains(potion_to_add)) {
             throw new IllegalArgumentException(potion_to_add.name);
         }
         Potions.add(potion_to_add);
@@ -227,7 +232,7 @@ public class State {
     }
 
     public void remove_card(AbstractCard card_to_remove) {
-        if (!Cards.contains(card_to_remove)) {
+        if (!Card_Encyclopedia.cards.contains(card_to_remove)) {
             throw new IllegalArgumentException();
         }
         Cards.remove(card_to_remove);
@@ -235,7 +240,7 @@ public class State {
     }
 
     public void add_card(AbstractCard card_to_add) {
-        if (!Card_Encyclopedia.dict.containsKey(card_to_add)) {
+        if (!Card_Encyclopedia.cards.contains(card_to_add)) {
             //throw new IllegalArgumentException();
         }
         Cards.add(card_to_add);
