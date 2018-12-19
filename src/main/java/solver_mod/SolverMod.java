@@ -8,6 +8,7 @@ import com.megacrit.cardcrawl.cards.CardGroup.CardGroupType;
 import com.megacrit.cardcrawl.core.AbstractCreature;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
+import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import com.megacrit.cardcrawl.potions.AbstractPotion;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
 import com.megacrit.cardcrawl.rewards.RewardItem;
@@ -19,9 +20,7 @@ import com.megacrit.cardcrawl.screens.CombatRewardScreen;
 import solver_mod.Solver_Code.Action;
 import solver_mod.Solver_Code.State;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 import static com.megacrit.cardcrawl.dungeons.AbstractDungeon.combatRewardScreen;
 import static com.megacrit.cardcrawl.dungeons.AbstractDungeon.returnRandomNonCampfireRelic;
@@ -43,9 +42,9 @@ public class SolverMod implements PreTurnSubscriber, OnStartBattleSubscriber,
     
     @Override
     public void receivePreTurn() {
-        AbstractRelic r = returnRandomNonCampfireRelic(AbstractRelic.RelicTier.COMMON);
-        AbstractDungeon.getCurrRoom().spawnRelicAndObtain(Settings.WIDTH / 2.0f,
-                Settings.HEIGHT / 2.0f, r);
+        //AbstractRelic r = returnRandomNonCampfireRelic(AbstractRelic.RelicTier.COMMON);
+        //AbstractDungeon.getCurrRoom().spawnRelicAndObtain(Settings.WIDTH / 2.0f,
+        //       Settings.HEIGHT / 2.0f, r);
         // gather all the possible targets in one list
         List<AbstractCreature> creatures =
                 new ArrayList<AbstractCreature>(AbstractDungeon.getCurrRoom().monsters.monsters);
@@ -63,37 +62,79 @@ public class SolverMod implements PreTurnSubscriber, OnStartBattleSubscriber,
                 iter.remove();
             }
         }
-
-
-        //if (card.canUse(AbstractDungeon.player, (AbstractMonster)creat)) {
-        //    AbstractDungeon.player.useCard(card, (AbstractMonster)creat, 0);
-        //    return;
-        //}
-
         
         Action act = new Action();
-        State currentState = State.getState(),
+        State currentState = new State(),
               chosenState = currentState;
-        for (AbstractCreature creature : creatures) {
-            for (AbstractCard c : cards) {
-                // instead of throwing an exception for invalid actions, return
-                // null (to avoid using try-catch here)
-                State permutation = act.use_a_card(c.name, creature.name,
-                                                   currentState);
-                if (permutation != null && permutation.score() > chosenState.score()) {
-                    chosenState = permutation;
-                }
+        Queue<State> curStates = new LinkedList<>();
+        curStates.add(currentState);
+
+        currentState.initialise();
+
+        int count = 0;
+        while (!curStates.isEmpty()) {
+            currentState = curStates.remove();
+            if (count > 100000) {
+                break;
+                //throw new IllegalArgumentException("current state energy " + currentState.Energy);
             }
-            
-            for (AbstractPotion p : potions) {
-                State permutation = act.use_a_potion(p.name, creature.name,
-                                                     currentState);
-                if (permutation != null && permutation.score() > chosenState.score()) {
-                    chosenState = permutation;
+            for (AbstractCreature creature : creatures) {
+                if (AbstractDungeon.player == creature) {
+                    continue;
+                }
+                for (AbstractCard c : currentState.Cards) {
+                    if (c.cost > currentState.Energy || !c.canUse(AbstractDungeon.player, (AbstractMonster)creature)) {
+                        continue;
+                    }
+                    // instead of throwing an exception for invalid actions, return
+                    // null (to avoid using try-catch here)
+                    State permutation = act.use_a_card(c.name, c, creature.name, (AbstractMonster)creature,
+                            currentState);
+                    curStates.add(permutation);
+                    if (permutation != null && permutation.score() > chosenState.score()) {
+                        chosenState = permutation;
+                    }
+                    count++;
+                }
+
+                for (AbstractPotion p : currentState.Potions) {
+                    if (!p.canUse()) {
+                        continue;
+                    }
+                    State permutation = act.use_a_potion(p.name, p, creature.name, (AbstractMonster)creature,
+                            currentState);
+                    curStates.add(permutation);
+                    if (permutation != null && permutation.score() > chosenState.score()) {
+                        chosenState = permutation;
+                    }
+                    count++;
                 }
             }
         }
-        State.setState(chosenState); // or some other way to "pick" this action/state
+        //if (count >= 0)
+        //throw new IllegalArgumentException("" + count);
+
+        // Trigger ideal actions for best state outcome
+        //throw new IllegalArgumentException("num actions in chosen state: " + chosenState.actions.size());
+
+        for (int i = 0; i < chosenState.actions.size(); i++) {
+            Object abstract_obj = chosenState.actions.get(i);
+            AbstractMonster target = chosenState.action_targets.get(i);
+            if (abstract_obj instanceof AbstractCard) {
+                AbstractCard ac = (AbstractCard) abstract_obj;
+                if (ac.canUse(AbstractDungeon.player, target)) {
+                    AbstractDungeon.player.useCard(ac, target, 0);
+                }
+            } else if (abstract_obj instanceof AbstractPotion) {
+                AbstractPotion ap = (AbstractPotion) abstract_obj;
+                if (ap.canUse()) {
+                    ap.use(target);
+                }
+            }
+        }
+
+        // picking a specific state
+        //State.setState(chosenState); // or some other way to "pick" this action/state
     }
 
     @Override

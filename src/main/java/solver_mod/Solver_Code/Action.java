@@ -5,12 +5,17 @@ The action is checked to be valid.
 If valid, the new state is calculated and returned.
 */
 
+import com.megacrit.cardcrawl.cards.AbstractCard;
+import com.megacrit.cardcrawl.monsters.AbstractMonster;
+import com.megacrit.cardcrawl.potions.AbstractPotion;
+
 public class Action {
 
 
-    public State use_a_potion(String potion, String target, State current_state){
+    public State use_a_potion(String potion, AbstractPotion ap, String target, AbstractMonster am, State current_state){
         State state_to_use = current_state.deep_copy();
-        state_to_use.actions.add(potion);
+        state_to_use.actions.add(ap);
+        state_to_use.action_targets.add(am);
         if (!Potion_Encyclopedia.dict.containsKey(potion)) {
             throw new IllegalArgumentException("Potion not in list");
         }
@@ -141,13 +146,14 @@ public class Action {
                 break;
             default: break;
         }
-        state_to_use.remove_potion(potion);
+        state_to_use.remove_potion(ap);
         return state_to_use;
     }
 
-    public State use_a_card(String card, String target, State current_state) {
+    public State use_a_card(String card, AbstractCard ac, String target, AbstractMonster am, State current_state) {
         State state_to_use = current_state.deep_copy();
-        state_to_use.actions.add(card);
+        state_to_use.actions.add(ac);
+        state_to_use.action_targets.add(am);
         if (!Card_Encyclopedia.dict.containsKey(card)) {
             throw new IllegalArgumentException("Card not in list");
         }
@@ -155,13 +161,14 @@ public class Action {
             throw new IllegalArgumentException("Invalid target");
         }
         //1) remove card from state
-        state_to_use.remove_card(card);
+        state_to_use.remove_card(ac);
+        state_to_use.Energy -= ac.cost;
         //2) remove the energy the card costs from the state
         //state_to_use.set_energy(-card.energy);
         //3) change player attributes in state
         //4) change enemy attributes in state
 
-        return current_state;
+        return state_to_use;
     }
 
     public State end_turn(State current_state) {

@@ -19,12 +19,13 @@ import com.megacrit.cardcrawl.powers.PoisonPower;
 
 public class State {
 
-    public List<String> actions = new ArrayList<>();
+    public List<Object> actions = new ArrayList<>();
+    public List<AbstractMonster> action_targets = new ArrayList<>();
 
     public int Self_Health = 0;
     public int Max_Health = AbstractDungeon.player.maxHealth;
-    public List<String> Potions = new ArrayList<String>();
-    public List<String> Cards = new ArrayList<String>();
+    public List<AbstractPotion> Potions = new ArrayList<>();
+    public List<AbstractCard> Cards = new ArrayList<>();
     public int Current_Block = 0;
     public int Energy = 0;
     public int Strength = 0;
@@ -43,32 +44,28 @@ public class State {
     public List<Integer> Vulnerable_Enemy_Has = new ArrayList<Integer>();
     public List<Integer> Poison_Enemy_Has = new ArrayList<Integer>();
 
-    public State() {
-
-        initialise();
-    }
-
     public State deep_copy() {
         State new_state = new State();
         new_state.actions = new ArrayList<>(this.actions);
+        new_state.action_targets = new ArrayList<>(this.action_targets);
 
         new_state.set_self_health(Self_Health);
-
-        for (String potion : Potions) {
-            new_state.add_potion(potion);
-        }
-
-        for (String card : Cards) {
-            new_state.add_card(card);
-        }
-
+        new_state.set_max_health(Max_Health);
         new_state.set_block(Current_Block);
         new_state.set_energy(Energy);
         new_state.set_strength(Strength);
         new_state.set_dexterity(Dexterity);
         new_state.set_vulnerable(Vulnerable);
-        new_state.set_weak(Weak);
         new_state.set_frail(Frail);
+        new_state.set_weak(Weak);
+        new_state.Number_of_Enemies = Number_of_Enemies;
+
+        for (AbstractPotion potion : Potions) {
+            new_state.add_potion(potion);
+        }
+        for (AbstractCard card : Cards) {
+            new_state.add_card(card);
+        }
 
         for (String enemy : Enemies) {
             new_state.add_enemy(enemy);
@@ -83,12 +80,8 @@ public class State {
         Self_Health = AbstractDungeon.player.currentHealth;
         Current_Block = AbstractDungeon.player.currentBlock;
         Energy = AbstractDungeon.player.energy.energy;
-        for (AbstractPotion p : AbstractDungeon.player.potions) {
-            Potions.add(p.name);
-        }
-        for (AbstractCard c : AbstractDungeon.player.hand.group) {
-            Cards.add(c.name);
-        }
+        Potions.addAll(AbstractDungeon.player.potions);
+        Cards.addAll(AbstractDungeon.player.hand.group);
         Strength = 0;
         Dexterity = 0;
         Weak = 0;
@@ -122,6 +115,12 @@ public class State {
     }
     
     private void add_enemy(AbstractMonster enemy) {
+        if (Enemies == null) {
+            Enemies = new ArrayList<>();
+        }
+        if (enemy == null) {
+            return;
+        }
         Enemies.add(enemy.name);
 
         int intentDmg = 0;
@@ -129,15 +128,15 @@ public class State {
         int intentMultiAmt = 0;
         try {
             Enemy_Health_List.add(enemy.currentHealth);
-            Field intentDmgField = enemy.getClass().getDeclaredField("intentDmg");
+            Field intentDmgField = AbstractMonster.class.getDeclaredField("intentDmg");
             intentDmgField.setAccessible(true);
             intentDmg = (Integer) intentDmgField.get(enemy);
 
-            Field isMultiDmgField = enemy.getClass().getDeclaredField("isMultiDmg");
+            Field isMultiDmgField = AbstractMonster.class.getDeclaredField("isMultiDmg");
             isMultiDmgField.setAccessible(true);
             isMultiDmg = (Boolean) isMultiDmgField.get(enemy);
 
-            Field intentMultiAmtFied = enemy.getClass().getDeclaredField("intentMultiAmt");
+            Field intentMultiAmtFied = AbstractMonster.class.getDeclaredField("intentMultiAmt");
             intentMultiAmtFied.setAccessible(true);
             intentMultiAmt = (Integer) intentMultiAmtFied.get(enemy);
         } catch (Exception e) {
@@ -181,7 +180,7 @@ public class State {
 
 
     public void validate_public_fields() {
-
+        return;/*
         if (Self_Health < 0) {
              throw new IllegalArgumentException();
          }
@@ -212,16 +211,16 @@ public class State {
         if (Potions.size() < 0) {
             throw new IllegalArgumentException();
         }
-        for (String potion : Potions) {
-            if (!Potion_Encyclopedia.dict.containsKey(potion)) {
+        for (AbstractPotion potion : Potions) {
+            if (!Potion_Encyclopedia.dict.containsKey(potion.name)) {
                 throw new IllegalArgumentException();
             }
         }
         if (Cards.size() < 0) {
             throw new IllegalArgumentException();
         }
-        for (String card : Cards) {
-            if (!Card_Encyclopedia.dict.containsKey(card)) {
+        for (AbstractCard card : Cards) {
+            if (!Card_Encyclopedia.dict.containsKey(card.name)) {
                 throw new IllegalArgumentException();
             }
         }
@@ -291,7 +290,7 @@ public class State {
             if (poison < 0) {
                 throw new IllegalArgumentException();
             }
-        }
+        }*/
     }
 
     public int get_max_health() {
@@ -319,7 +318,7 @@ public class State {
         return to_return;
     }
 
-    public void remove_potion(String potion_to_remove) {
+    public void remove_potion(AbstractPotion potion_to_remove) {
         if (!Potions.contains(potion_to_remove)) {
             throw new IllegalArgumentException();
         }
@@ -327,20 +326,19 @@ public class State {
         validate_public_fields();
     }
 
-    public void add_potion(String potion_to_add) {
-        if (!Potion_Encyclopedia.dict.containsKey(potion_to_add)) {
-            throw new IllegalArgumentException();
+    public void add_potion(AbstractPotion potion_to_add) {
+        if (!Potion_Encyclopedia.dict.containsKey(potion_to_add.name)) {
+            throw new IllegalArgumentException(potion_to_add.name);
         }
         Potions.add(potion_to_add);
         validate_public_fields();
     }
 
-    public List<String> get_potions() {
-        List<String> to_return = Potions;
-        return to_return;
+    public List<AbstractPotion> get_potions() {
+        return Potions;
     }
 
-    public void remove_card(String card_to_remove) {
+    public void remove_card(AbstractCard card_to_remove) {
         if (!Cards.contains(card_to_remove)) {
             throw new IllegalArgumentException();
         }
@@ -348,16 +346,16 @@ public class State {
         validate_public_fields();
     }
 
-    public void add_card(String card_to_add) {
+    public void add_card(AbstractCard card_to_add) {
         if (!Card_Encyclopedia.dict.containsKey(card_to_add)) {
-            throw new IllegalArgumentException();
+            //throw new IllegalArgumentException();
         }
         Cards.add(card_to_add);
         validate_public_fields();
     }
 
-    public List<String> get_cards() {
-        List<String> to_return = Cards;
+    public List<AbstractCard> get_cards() {
+        List<AbstractCard> to_return = Cards;
         return to_return;
     }
 
@@ -475,7 +473,7 @@ public class State {
 
     public void add_enemy(String enemy_to_add) {
         if (!Enemy_Encyclopedia.dict.containsKey(enemy_to_add)) {
-            throw new IllegalArgumentException();
+            //throw new IllegalArgumentException();
         }
         ++Number_of_Enemies;
         add_enemy(Enemy_Encyclopedia.dict.get(enemy_to_add));
@@ -616,6 +614,9 @@ public class State {
         score += current_block_score() + current_energy_score() + current_strength_score();
         score += current_dexterity_score() + current_vulnerable_score() + current_weak_score();
         score += number_of_enemies_score();
+
+        // TODO: XXX
+        score += -Cards.size()*5;
         for (String enemy : Enemies) {
             score += enemy_rank_score(enemy) + enemy_block_score(enemy) + enemy_damage_score(enemy);
             score += enemy_debuff_applied_score(enemy);

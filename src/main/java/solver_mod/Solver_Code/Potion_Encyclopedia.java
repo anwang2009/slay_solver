@@ -20,7 +20,7 @@ public class Potion_Encyclopedia {
             new EntropicBrew(), new EssenceOfSteel(), new ExplosivePotion(),
             new FairyPotion(), new FearPotion(), new FirePotion(), new FocusPotion(),
             new FruitJuice(), new GamblersBrew(), new GhostInAJar(),
-            new LiquidBronze(), new PoisonPotion(), /*new PotionSlot(),*/
+            new LiquidBronze(), new PoisonPotion(), new PotionSlot(0),
             new PowerPotion(), new RegenPotion(), new SkillPotion(),
             new SmokeBomb(), new SneckoOil(), new SpeedPotion(),
             new SteroidPotion(), new StrengthPotion(), new SwiftPotion(),
