@@ -41,7 +41,6 @@ public class State {
     public List<Integer> Debuff_Enemy_Applies = new ArrayList<Integer>();
     public List<Integer> Weak_Enemy_Has = new ArrayList<Integer>();
     public List<Integer> Vulnerable_Enemy_Has = new ArrayList<Integer>();
-    public List<Integer> Poison_Enemy_Has = new ArrayList<Integer>();
 
     public State() {
 
@@ -176,7 +175,6 @@ public class State {
                 break;
             }
         }
-        Poison_Enemy_Has.add(poison);
     }
 
 
@@ -281,14 +279,6 @@ public class State {
         }
         for (int vulnerable : Vulnerable_Enemy_Has) {
             if (vulnerable < 0) {
-                throw new IllegalArgumentException();
-            }
-        }
-        if (Poison_Enemy_Has.size() != Number_of_Enemies) {
-            throw new IllegalArgumentException();
-        }
-        for (int poison : Poison_Enemy_Has) {
-            if (poison < 0) {
                 throw new IllegalArgumentException();
             }
         }
@@ -467,7 +457,6 @@ public class State {
         Damage_Enemy_Inflicts.remove(index);
         Block_Enemy_Will_Add.remove(index);
         Debuff_Enemy_Applies.remove(index);
-        Poison_Enemy_Has.remove(index);
         Vulnerable_Enemy_Has.remove(index);
         Weak_Enemy_Has.remove(index);
         validate_public_fields();
@@ -590,27 +579,6 @@ public class State {
         return Weak_Enemy_Has.get(index);
     }
 
-    public void set_poison_enemy_has(String enemy, int poison_to_add) {
-        if (!Enemies.contains(enemy)) {
-            throw new IllegalArgumentException();
-        }
-        int index = Enemies.indexOf(enemy);
-        int poison_to_set = Poison_Enemy_Has.get(index) + poison_to_add;
-        if (poison_to_set < 0) {
-            poison_to_set = 0;
-        }
-        Poison_Enemy_Has.set(index, poison_to_set);
-        validate_public_fields();
-    }
-
-    public int get_poison_enemy_has(String enemy) {
-        if (!Enemies.contains(enemy)) {
-            throw new IllegalArgumentException();
-        }
-        int index = Enemies.indexOf(enemy);
-        return Poison_Enemy_Has.get(index);
-    }
-
     public double score() {
         double score = self_health_score() + number_of_potions_Score();
         score += current_block_score() + current_energy_score() + current_strength_score();
@@ -622,7 +590,6 @@ public class State {
             score += enemy_health_score(enemy);
             score += enemy_vulnerable_score(enemy);
             score += enemy_weak_score(enemy);
-            score += enemy_poison_score(enemy);
         }
         return score;
     }
@@ -706,11 +673,5 @@ public class State {
         int index = Enemies.indexOf(enemy);
         int vulnerable = Vulnerable_Enemy_Has.get(index);
         return vulnerable*2;
-    }
-
-    private double enemy_poison_score(String enemy) {
-        int index = Enemies.indexOf(enemy);
-        int poison = Poison_Enemy_Has.get(index);
-        return poison*2;
     }
 }
