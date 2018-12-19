@@ -8,21 +8,22 @@ If valid, the new state is calculated and returned.
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import com.megacrit.cardcrawl.potions.AbstractPotion;
+import com.megacrit.cardcrawl.potions.*;
 
 public class Action {
 
 
-    public State use_a_potion(String potion, AbstractPotion ap, String target, AbstractMonster am, State current_state){
+    public State use_a_potion(AbstractPotion ap, AbstractMonster am, State current_state){
         State state_to_use = current_state.deep_copy();
         state_to_use.actions.add(ap);
         state_to_use.action_targets.add(am);
-        if (!Potion_Encyclopedia.dict.containsKey(potion)) {
+        if (!Potion_Encyclopedia.potions.contains(ap)) {
             throw new IllegalArgumentException("Potion not in list");
         }
-        if (target.equalsIgnoreCase("self") || target.equalsIgnoreCase("enemy")) {
-            throw new IllegalArgumentException("Invalid target");
-        }
-        switch (potion) {
+        //if (am.equalsIgnoreCase("self") || am.equalsIgnoreCase("enemy")) {
+         //   throw new IllegalArgumentException("Invalid target");
+        //}
+        switch (ap.name) {
             case "Ancient Potion" :
                 //set 1st encountered debuff by enemy to 0;
                 break;
@@ -51,7 +52,7 @@ public class Action {
                 state_to_use.set_block(4);
                 break;
             case "Explosive Potion":
-                for(String enemy : state_to_use.get_enemies()) {
+                for(AbstractMonster enemy : state_to_use.get_enemies()) {
                     int current_block = state_to_use.get_enemy_block(enemy);
                     int damage_remaining = 10 - current_block;
                     state_to_use.set_enemy_block(enemy, -10);
@@ -67,18 +68,18 @@ public class Action {
                 state_to_use.set_self_health((int)state_to_use.get_max_health());
                 break;
             case "Fire Potion":
-                int current_block = state_to_use.get_enemy_block(target);
+                int current_block = state_to_use.get_enemy_block(am);
                 int damage_remaining = 20 - current_block;
-                state_to_use.set_enemy_block(target, - 20);
+                state_to_use.set_enemy_block(am, - 20);
                 if (damage_remaining > 0) {
-                    state_to_use.set_enemy_health(target, -damage_remaining);
+                    state_to_use.set_enemy_health(am, -damage_remaining);
                 }
-                if (state_to_use.get_enemy_health(target) == 0) {
-                    state_to_use.remove_enemy(target);
+                if (state_to_use.get_enemy_health(am) == 0) {
+                    state_to_use.remove_enemy(am);
                 }
                 break;
             case "FearPotion":
-                state_to_use.set_vulnerable_enemy_has(target, 3);
+                state_to_use.set_vulnerable_enemy_has(am, 3);
                 break;
             case "Fruit Juice":
                 state_to_use.set_max_health(5);
@@ -86,7 +87,7 @@ public class Action {
             case "GamblersBrew":
                 break;
             case "LiquidBronze":
-                for (String enemy : state_to_use.get_enemies()) {
+                for (AbstractMonster enemy : state_to_use.get_enemies()) {
                     if (state_to_use.get_enemy_damage(enemy) > 0) {
                         current_block = state_to_use.get_enemy_block(enemy);
                         damage_remaining = 3 - current_block;
@@ -94,21 +95,21 @@ public class Action {
                         if (damage_remaining > 0) {
                             state_to_use.set_enemy_health(enemy, -damage_remaining);
                         }
-                        if (state_to_use.get_enemy_health(target) == 0) {
-                            state_to_use.remove_enemy(target);
+                        if (state_to_use.get_enemy_health(am) == 0) {
+                            state_to_use.remove_enemy(am);
                         }
                     }
                 }
                 break;
             case "Poison Potion":
-                current_block = state_to_use.get_enemy_block(target);
+                current_block = state_to_use.get_enemy_block(am);
                 damage_remaining = 6 - current_block;
-                state_to_use.set_enemy_block(target, - 6);
+                state_to_use.set_enemy_block(am, - 6);
                 if (damage_remaining > 0) {
-                    state_to_use.set_enemy_health(target, -damage_remaining);
+                    state_to_use.set_enemy_health(am, -damage_remaining);
                 }
-                if (state_to_use.get_enemy_health(target) == 0) {
-                    state_to_use.remove_enemy(target);
+                if (state_to_use.get_enemy_health(am) == 0) {
+                    state_to_use.remove_enemy(am);
                 }
                 break;
             case "PowerPotion":
@@ -121,7 +122,7 @@ public class Action {
                 //add one of 3 random cards; set their energy to 0
                 break;
             case "SmokeBomb":
-                for (String enemy : state_to_use.get_enemies()) {
+                for (AbstractMonster enemy : state_to_use.get_enemies()) {
                     state_to_use.remove_enemy(enemy);
                 }
                 break;
@@ -142,7 +143,7 @@ public class Action {
                 //add three cards
                 break;
             case "Weak Potion":
-                state_to_use.set_weak_enemy_has(target, 3);
+                state_to_use.set_weak_enemy_has(am, 3);
                 break;
             default: break;
         }
@@ -150,16 +151,16 @@ public class Action {
         return state_to_use;
     }
 
-    public State use_a_card(String card, AbstractCard ac, String target, AbstractMonster am, State current_state) {
+    public State use_a_card(AbstractCard ac, AbstractMonster am, State current_state) {
         State state_to_use = current_state.deep_copy();
         state_to_use.actions.add(ac);
         state_to_use.action_targets.add(am);
-        if (!Card_Encyclopedia.dict.containsKey(card)) {
-            throw new IllegalArgumentException("Card not in list");
-        }
-        if (target.equalsIgnoreCase("self") || target.equalsIgnoreCase("enemy")) {
-            throw new IllegalArgumentException("Invalid target");
-        }
+        //if (!Card_Encyclopedia.cards.contains(ac)) {
+        //    throw new IllegalArgumentException("Card not in list");
+        //}
+        //if (am.equalsIgnoreCase("self") || am.equalsIgnoreCase("enemy")) {
+        //    throw new IllegalArgumentException("Invalid target");
+        //}
         //1) remove card from state
         state_to_use.remove_card(ac);
         state_to_use.Energy -= ac.cost;
