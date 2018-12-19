@@ -27,39 +27,19 @@ import static com.megacrit.cardcrawl.dungeons.AbstractDungeon.combatRewardScreen
 import static com.megacrit.cardcrawl.dungeons.AbstractDungeon.returnRandomNonCampfireRelic;
 
 @SpireInitializer
-public class SolverMod implements PostDungeonInitializeSubscriber,
-        PostDrawSubscriber, PreTurnSubscriber, OnStartBattleSubscriber,
+public class SolverMod implements PreTurnSubscriber, OnStartBattleSubscriber,
         SeeRewardSubscriber, PreCardRewardSubscriber {
 
     private int count, totalCount;
     private CardGroup cards = null;
 
-    private void resetCounts() {
-        totalCount = count = 0;
-    }
-
     public SolverMod() {
         BaseMod.subscribe(this);
-        resetCounts();
     }
 
     public static void initialize() {
         new SolverMod();
     }
-
-    @Override
-    public void receivePostDungeonInitialize() {
-        resetCounts();
-    }
-
-    @Override
-    public void receivePostDraw(AbstractCard c) {
-        //AbstractRelic r = returnRandomNonCampfireRelic(AbstractRelic.RelicTier.COMMON);
-        //AbstractDungeon.getCurrRoom().spawnRelicAndObtain(Settings.WIDTH / 2.0f,
-         //       Settings.HEIGHT / 2.0f, r);
-    }
-
-
     
     @Override
     public void receivePreTurn() {

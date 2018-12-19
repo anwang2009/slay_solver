@@ -8,6 +8,7 @@ Card_Encyclopedia
 Enemy_Encyclopedia
 */
 
+import java.lang.reflect.Field;
 import java.util.*;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
@@ -119,9 +120,19 @@ public class State {
         // initialize encyclopedias
     }
     
-    private void add_enemy(AbstractMonster enemy) {
+    private void add_enemy(AbstractMonster enemy) throws NoSuchFieldException, IllegalAccessException {
         Enemies.add(enemy.name);
         Enemy_Health_List.add(enemy.currentHealth);
+        Field intentDmgField = enemy.getClass().getDeclaredField("intentDmg");
+        intentDmgField.setAccessible(true);
+        int intentDmg = (Integer) intentDmgField.get(enemy);
+
+        Field isMultiDmgField = enemy.getClass().getDeclaredField("isMultiDmg");
+        isMultiDmgField.setAccessible(true);
+        boolean isMultiDmg = (Boolean) isMultiDmgField.get(enemy);
+
+        Field
+
         Damage_Enemy_Inflicts.add();
         Block_Enemy_Will_Add.add();
         Strengths_Enemy_Adds.add();
@@ -279,6 +290,14 @@ public class State {
 
     public int get_max_health() {
         return Max_Health;
+    }
+
+    public void set_max_health(int health_to_add) {
+        Max_Health += health_to_add;
+        if (Max_Health < 0) {
+            Max_Health = 0;
+        }
+        validate_public_fields();
     }
 
     public void set_self_health(int health_to_add) {
