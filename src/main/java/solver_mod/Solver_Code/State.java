@@ -35,7 +35,7 @@ public class State {
     public int Frail = 0;
 
     public int Number_of_Enemies = 0;
-    public List<String> Enemies = new ArrayList<String>();
+    public List<AbstractMonster> Enemies = new ArrayList<AbstractMonster>();
     public List<Integer> Enemy_Health_List = new ArrayList<Integer>();
     public List<Integer> Damage_Enemy_Inflicts = new ArrayList<Integer>();
     public List<Integer> Block_Enemy_Will_Add = new ArrayList<Integer>();
@@ -66,7 +66,7 @@ public class State {
             new_state.add_card(card);
         }
 
-        for (String enemy : Enemies) {
+        for (AbstractMonster enemy : Enemies) {
             new_state.Enemies.add(enemy);
         }
         new_state.Enemy_Health_List.addAll(Enemy_Health_List);
@@ -118,19 +118,23 @@ public class State {
         // initialize encyclopedias
     }
     
-    private void add_enemy(AbstractMonster enemy) {
+    public void add_enemy(AbstractMonster enemy) {
+        if (!Enemy_Encyclopedia.enemies.contains(enemy)) {
+            //throw new IllegalArgumentException();
+        }
         if (Enemies == null) {
             Enemies = new ArrayList<>();
         }
         if (enemy == null) {
             return;
         }
-        Enemies.add(enemy.name);
+        Enemies.add(enemy);
 
         int intentDmg = 0;
         boolean isMultiDmg = false;
         int intentMultiAmt = 0;
         try {
+            ++Number_of_Enemies;
             Enemy_Health_List.add(enemy.currentHealth);
             Field intentDmgField = AbstractMonster.class.getDeclaredField("intentDmg");
             intentDmgField.setAccessible(true);
@@ -179,6 +183,7 @@ public class State {
                 break;
             }
         }
+        validate_public_fields();
     }
 
 
@@ -363,20 +368,12 @@ public class State {
         validate_public_fields();
     }
 
-    public void add_enemy(String enemy_to_add) {
-        if (!Enemy_Encyclopedia.dict.containsKey(enemy_to_add)) {
-            //throw new IllegalArgumentException();
-        }
-        ++Number_of_Enemies;
-        add_enemy(Enemy_Encyclopedia.dict.get(enemy_to_add));
-        validate_public_fields();
-    }
 
-    public List<String> get_enemies() {
+    public List<AbstractMonster> get_enemies() {
         return Enemies;
     }
 
-    public void set_enemy_health(String enemy, int health_to_add) {
+    public void set_enemy_health(AbstractMonster enemy, int health_to_add) {
         if (!Enemies.contains(enemy)) {
             throw new IllegalArgumentException();
         }
@@ -488,7 +485,7 @@ public class State {
 
         // TODO: XXX
         score += -Cards.size()*5;
-        for (String enemy : Enemies) {
+        for (AbstractMonster enemy : Enemies) {
             score += enemy_rank_score(enemy) + enemy_block_score(enemy) + enemy_damage_score(enemy);
             score += enemy_debuff_applied_score(enemy);
             score += enemy_health_score(enemy);
@@ -539,41 +536,41 @@ public class State {
         return -Enemies.size()*2;
     }
 
-    private double enemy_rank_score(String enemy) {
+    private double enemy_rank_score(AbstractMonster enemy) {
         return 0.0;
     }
 
-    private double enemy_health_score(String enemy) {
+    private double enemy_health_score(AbstractMonster enemy) {
         int index = Enemies.indexOf(enemy);
         int health = Enemy_Health_List.get(index);
         return -health*2;
     }
 
-    private double enemy_damage_score(String enemy) {
+    private double enemy_damage_score(AbstractMonster enemy) {
         int index = Enemies.indexOf(enemy);
         int damage = Damage_Enemy_Inflicts.get(index);
         return -damage*2;
     }
 
-    private double enemy_block_score(String enemy) {
+    private double enemy_block_score(AbstractMonster enemy) {
         int index = Enemies.indexOf(enemy);
         int block = Block_Enemy_Will_Add.get(index);
         return -block*2;
     }
 
-    private double enemy_debuff_applied_score(String enemy) {
+    private double enemy_debuff_applied_score(AbstractMonster enemy) {
         int index = Enemies.indexOf(enemy);
         int debuff = Debuff_Enemy_Applies.get(index);
         return -debuff*2;
     }
 
-    private double enemy_weak_score(String enemy) {
+    private double enemy_weak_score(AbstractMonster enemy) {
         int index = Enemies.indexOf(enemy);
         int weak = Weak_Enemy_Has.get(index);
         return weak*2;
     }
 
-    private double enemy_vulnerable_score(String enemy) {
+    private double enemy_vulnerable_score(AbstractMonster enemy) {
         int index = Enemies.indexOf(enemy);
         int vulnerable = Vulnerable_Enemy_Has.get(index);
         return vulnerable*2;
