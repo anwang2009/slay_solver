@@ -115,7 +115,11 @@ public class State {
         Number_of_Enemies = monsters.size();
         
         for (AbstractMonster m : monsters) {
-            add_enemy(m);
+            try {
+                add_enemy(m);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         // initialize encyclopedias
     }
@@ -131,10 +135,16 @@ public class State {
         isMultiDmgField.setAccessible(true);
         boolean isMultiDmg = (Boolean) isMultiDmgField.get(enemy);
 
-        Field
+        Field intentMultiAmtFied = enemy.getClass().getDeclaredField("intentMultiAmt");
+        intentMultiAmtFied.setAccessible(true);
+        int intentMultiAmt = (Integer) intentMultiAmtFied.get(enemy);
 
-        Damage_Enemy_Inflicts.add();
-        Block_Enemy_Will_Add.add();
+        if (isMultiDmg) {
+            intentDmg *= intentMultiAmt;
+        }
+
+        Damage_Enemy_Inflicts.add(intentDmg);
+        Block_Enemy_Will_Add.add(enemy.currentBlock);
         Strengths_Enemy_Adds.add();
         Dexterity_Enemy_Adds.add();
         Weak_Enemy_Applies.add();
