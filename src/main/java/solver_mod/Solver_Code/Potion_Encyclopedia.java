@@ -18,7 +18,7 @@ public class Potion_Encyclopedia {
             new AncientPotion(), new AttackPotion(), new BlockPotion(),
             new BloodPotion(), new DexterityPotion(), new EnergyPotion(),
             new EntropicBrew(), new EssenceOfSteel(), new ExplosivePotion(),
-            new FairyPotion(), new FirePotion(), new FocusPotion(),
+            new FairyPotion(), new FearPotion(), new FirePotion(), new FocusPotion(),
             new FruitJuice(), new GamblersBrew(), new GhostInAJar(),
             new LiquidBronze(), new PoisonPotion(), /*new PotionSlot(),*/
             new PowerPotion(), new RegenPotion(), new SkillPotion(),
