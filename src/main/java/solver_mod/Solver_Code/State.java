@@ -349,7 +349,7 @@ public class State {
     }
 
 
-    public void remove_enemy(String enemy_to_remove) {
+    public void remove_enemy(AbstractMonster enemy_to_remove) {
         if (!Enemies.contains(enemy_to_remove)) {
             throw new IllegalArgumentException();
         }
@@ -386,7 +386,7 @@ public class State {
         validate_public_fields();
     }
 
-    public int get_enemy_health(String enemy) {
+    public int get_enemy_health(AbstractMonster enemy) {
         if (!Enemies.contains(enemy)) {
             throw new IllegalArgumentException();
         }
@@ -394,7 +394,7 @@ public class State {
         return Enemy_Health_List.get(index);
     }
 
-    public void set_enemy_damage(String enemy, int damage) {
+    public void set_enemy_damage(AbstractMonster enemy, int damage) {
         if (!Enemies.contains(enemy)) {
             throw new IllegalArgumentException();
         }
@@ -406,7 +406,7 @@ public class State {
         validate_public_fields();
     }
 
-    public int get_enemy_damage(String enemy) {
+    public int get_enemy_damage(AbstractMonster enemy) {
         if (!Enemies.contains(enemy)) {
             throw new IllegalArgumentException();
         }
@@ -414,7 +414,7 @@ public class State {
         return Damage_Enemy_Inflicts.get(index);
     }
 
-    public void set_enemy_block(String enemy, int block) {
+    public void set_enemy_block(AbstractMonster enemy, int block) {
         if (!Enemies.contains(enemy)) {
             throw new IllegalArgumentException();
         }
@@ -427,7 +427,7 @@ public class State {
         validate_public_fields();
     }
 
-    public int get_enemy_block(String enemy) {
+    public int get_enemy_block(AbstractMonster enemy) {
         if (!Enemies.contains(enemy)) {
             throw new IllegalArgumentException();
         }
@@ -435,7 +435,7 @@ public class State {
         return Block_Enemy_Will_Add.get(index);
     }
 
-    public void set_vulnerable_enemy_has(String enemy, int vulnerabe) {
+    public void set_vulnerable_enemy_has(AbstractMonster enemy, int vulnerabe) {
         if (!Enemies.contains(enemy)) {
             throw new IllegalArgumentException();
         }
@@ -448,7 +448,7 @@ public class State {
         validate_public_fields();
     }
 
-    public int get_vulnerable_enemy_has(String enemy) {
+    public int get_vulnerable_enemy_has(AbstractMonster enemy) {
         if (!Enemies.contains(enemy)) {
             //throw exception
         }
@@ -456,7 +456,7 @@ public class State {
         return Vulnerable_Enemy_Has.get(index);
     }
 
-    public void set_weak_enemy_has(String enemy, int weak) {
+    public void set_weak_enemy_has(AbstractMonster enemy, int weak) {
         if (!Enemies.contains(enemy)) {
             throw new IllegalArgumentException();
         }
@@ -469,7 +469,7 @@ public class State {
         validate_public_fields();
     }
 
-    public int get_weak_enemy_has(String enemy) {
+    public int get_weak_enemy_has(AbstractMonster enemy) {
         if (!Enemies.contains(enemy)) {
             throw new IllegalArgumentException();
         }
