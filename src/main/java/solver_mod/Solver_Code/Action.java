@@ -10,6 +10,7 @@ public class Action {
 
     public State use_a_potion(String potion, String target, State current_state){
         State state_to_use = current_state.deep_copy();
+        state_to_use.actions.add(potion);
         if (!Potion_Encyclopedia.dict.containsKey(potion)) {
             throw new IllegalArgumentException("Potion not in list");
         }
@@ -146,6 +147,7 @@ public class Action {
 
     public State use_a_card(String card, String target, State current_state) {
         State state_to_use = current_state.deep_copy();
+        state_to_use.actions.add(card);
         if (!Card_Encyclopedia.dict.containsKey(card)) {
             throw new IllegalArgumentException("Card not in list");
         }
