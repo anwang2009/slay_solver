@@ -42,6 +42,8 @@ public class State {
     public List<Integer> Debuff_Enemy_Applies = new ArrayList<Integer>();
     public List<Integer> Weak_Enemy_Has = new ArrayList<Integer>();
     public List<Integer> Vulnerable_Enemy_Has = new ArrayList<Integer>();
+    //todo: store enemy strength, create get and set methods for enemy strength,
+    //add enemy strength to score
 
     public State deep_copy() {
         State new_state = new State();
