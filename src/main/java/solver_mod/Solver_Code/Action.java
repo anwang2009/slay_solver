@@ -17,7 +17,7 @@ public class Action {
         State state_to_use = current_state.deep_copy();
         state_to_use.actions.add(ap);
         state_to_use.action_targets.add(am);
-        if (!Potion_Encyclopedia.potions.contains(ap)) {
+        if (!Potion_Encyclopedia.contains(ap)) {
             throw new IllegalArgumentException("Potion not in list");
         }
         switch (ap.name) {
@@ -152,7 +152,7 @@ public class Action {
         State state_to_use = current_state.deep_copy();
         state_to_use.actions.add(ac);
         state_to_use.action_targets.add(am);
-        if (!Card_Encyclopedia.cards.contains(ac)) {
+        if (!Card_Encyclopedia.contains(ac)) {
             throw new IllegalArgumentException("Card not in Encyclopedia");
         }
         //1) remove card from state
@@ -511,7 +511,7 @@ public class Action {
                 block = state_to_use.get_cards().size();
                 state_to_use.set_block(block);
                 state_to_use.set_energy(-ac.cost); break;
-            case "Panacea" :
+            /*case "Panacea" :
                 int count = 0;
                 for (AbstractMonster m : state_to_use.get_enemies()) {
                     if (state_to_use.get_debuff_enemy_applies() > 0) {
@@ -519,7 +519,7 @@ public class Action {
                                 -state_to_use.get_debuff_enemy_applies());
                     }
                 }
-                state_to_use.set_energy(-ac.cost); break;
+                state_to_use.set_energy(-ac.cost); break;*/
             case "Panic Button" :
                 state_to_use.set_block(30);
                 state_to_use.set_energy(-ac.cost); break;
