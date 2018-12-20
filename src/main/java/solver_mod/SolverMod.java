@@ -52,7 +52,7 @@ public class SolverMod implements PreTurnSubscriber, OnStartBattleSubscriber,
                 new ArrayList<AbstractCreature>(AbstractDungeon.getCurrRoom().monsters.monsters);
         creatures.add(AbstractDungeon.player);
         
-        // fetch cards and potions
+        /*// fetch cards and potions
         List<AbstractCard> cards = new ArrayList<AbstractCard>(AbstractDungeon.player.hand.group);
         List<AbstractPotion> potions = AbstractDungeon.player.potions;
         
@@ -63,15 +63,15 @@ public class SolverMod implements PreTurnSubscriber, OnStartBattleSubscriber,
             if (!c.freeToPlayOnce && c.costForTurn > AbstractDungeon.player.energy.energy) {
                 iter.remove();
             }
-        }
+        }*/
         
         Action act = new Action();
-        State currentState = new State(),
-              chosenState = currentState;
+        State currentState = new State();
         Queue<State> curStates = new LinkedList<>();
         curStates.add(currentState);
 
         currentState.initialise();
+        State chosenState = currentState;
 
         int count = 0;
         while (!curStates.isEmpty()) {
@@ -131,6 +131,7 @@ public class SolverMod implements PreTurnSubscriber, OnStartBattleSubscriber,
                 AbstractPotion ap = (AbstractPotion) abstract_obj;
                 if (ap.canUse()) {
                     ap.use(target);
+                    AbstractDungeon.player.removePotion(ap);
                 }
             }
         }

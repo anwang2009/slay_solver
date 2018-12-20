@@ -14,7 +14,7 @@ public class Enemy_Encyclopedia {
 
     public static List<AbstractMonster> enemies = new ArrayList<>();
 
-    public static  vpoid update() {
+    public static  void update() {
 
     }
 

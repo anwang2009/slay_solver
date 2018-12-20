@@ -141,12 +141,12 @@ public class Action {
         state_to_use.actions.add(ac);
         state_to_use.action_targets.add(am);
         if (!Card_Encyclopedia.contains(ac)) {
-            throw new IllegalArgumentException("Card not in Encyclopedia");
+            throw new IllegalArgumentException("Card not in Encyclopedia: " + ac);
         }
         //1) remove card from state
         state_to_use.remove_card(ac);
         //2) remove the energy the card costs from the state
-        state_to_use.Energy -= ac.cost;
+        //state_to_use.Energy -= ac.cost;
         switch (ac.name) {
             case "Bash" :
                 does_damage_to_enemy(state_to_use, am, 8);
