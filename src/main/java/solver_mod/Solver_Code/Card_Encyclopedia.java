@@ -173,7 +173,7 @@ public class Card_Encyclopedia {
     
     public static boolean contains(AbstractCard card) {
         for (AbstractCard c : cards) {
-            if (card.name.equals(c.name)) {
+            if (card.name.replace('+',' ').trim().equals(c.name)) {
                 return true;
             }
         }

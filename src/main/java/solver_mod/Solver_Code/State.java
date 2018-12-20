@@ -50,7 +50,7 @@ public class State {
 
     public State deep_copy() {
         State new_state = new State();
-        new_state.initialise();
+        //new_state.initialise();
         new_state.actions = new ArrayList<>(this.actions);
         new_state.action_targets = new ArrayList<>(this.action_targets);
 
