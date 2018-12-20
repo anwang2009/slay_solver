@@ -520,7 +520,7 @@ public class State {
 
     public double score() {
         double score = self_health_score() + number_of_potions_score() + number_of_cards_score();
-        score += current_block_score() + current_energy_score() + current_strength_score();
+        score += current_block_score() + current_strength_score();
         score += current_dexterity_score() + current_vulnerable_score() + current_weak_score();
         score += number_of_enemies_score();
         score += bonus_score();
@@ -570,16 +570,6 @@ public class State {
             return - Current_Block*5;
         }
         return Current_Block*2.5;
-    }
-
-    private double current_energy_score() {
-        if (Energy > Cards.size()) {
-            return Energy*0.3;
-        }
-        if (Energy < Cards.size()) {
-            return Energy*1;
-        }
-        return Energy*0.5;
     }
 
     private double current_strength_score() {
