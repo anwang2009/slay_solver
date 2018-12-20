@@ -24,8 +24,7 @@ import solver_mod.Solver_Code.State;
 
 import java.util.*;
 
-import static com.megacrit.cardcrawl.dungeons.AbstractDungeon.combatRewardScreen;
-import static com.megacrit.cardcrawl.dungeons.AbstractDungeon.returnRandomNonCampfireRelic;
+import static com.megacrit.cardcrawl.dungeons.AbstractDungeon.*;
 
 @SpireInitializer
 public class SolverMod implements PreTurnSubscriber, OnStartBattleSubscriber,
@@ -136,10 +135,16 @@ public class SolverMod implements PreTurnSubscriber, OnStartBattleSubscriber,
             }
         }
 
+        List<AbstractCard> cards = new ArrayList<>(player.hand.group);
+        List<AbstractMonster> monsters = new ArrayList<>(getCurrRoom().monsters.monsters);
+        for (AbstractCard ac : cards) {
+            for (AbstractMonster am : monsters) {
+                if (ac.canUse(player, am)) {
+                    player.useCard(ac, am, 0);
+                }
+            }
+        }
         AbstractDungeon.getCurrRoom().endTurn();
-
-        // picking a specific state
-        //State.setState(chosenState); // or some other way to "pick" this action/state
     }
 
     @Override
@@ -149,7 +154,7 @@ public class SolverMod implements PreTurnSubscriber, OnStartBattleSubscriber,
 
 
     @Override
-    public void receiveSeeReward() {
+    public void receiveSeeReward(CombatRewardScreen screen) {
         if (AbstractDungeon.screen != AbstractDungeon.CurrentScreen.COMBAT_REWARD) {
             return;
         }
