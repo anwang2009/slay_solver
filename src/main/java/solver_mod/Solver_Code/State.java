@@ -519,12 +519,13 @@ public class State {
     }
 
     public double score() {
-        double score = self_health_score() + number_of_potions_Score();
+        double score = self_health_score() + number_of_potions_score() + number_of_cards_score();
         score += current_block_score() + current_energy_score() + current_strength_score();
         score += current_dexterity_score() + current_vulnerable_score() + current_weak_score();
         score += number_of_enemies_score();
+        score += bonus_score();
 
-        // TODO: XXX
+        // TODO: Fill in enemy rank score method
         score += -Cards.size()*5;
         for (AbstractMonster enemy : Enemies) {
             score += enemy_rank_score(enemy) + enemy_block_score(enemy) + enemy_damage_score(enemy);
@@ -541,12 +542,20 @@ public class State {
             return -(double)Integer.MAX_VALUE;
         }
         else {
-            return Self_Health*5;
+            return Self_Health*10;
         }
     }
 
-    private double number_of_potions_Score() {
+    private double max_health_score() {
+        return Max_Health*3;
+    }
+
+    private double number_of_potions_score() {
         return (Potions.size()*2);
+    }
+
+    private double number_of_cards_score() {
+        return (Cards.size()*2);
     }
 
     private double current_block_score() {
@@ -554,23 +563,23 @@ public class State {
     }
 
     private double current_energy_score() {
-        return Energy*2;
+        return Energy*4;
     }
 
     private double current_strength_score() {
-        return Strength*2;
+        return Strength*5;
     }
 
     private double current_dexterity_score() {
-        return Dexterity*2;
+        return Dexterity*5;
     }
     
     private double current_vulnerable_score() {
-        return -Vulnerable*2;
+        return -Vulnerable*5;
     }
 
     private double current_weak_score() {
-        return -Weak*2;
+        return -Weak*5;
     }
 
     private double number_of_enemies_score() {
@@ -578,46 +587,46 @@ public class State {
     }
 
     private double enemy_rank_score(AbstractMonster enemy) {
-        return 0.0;
+        return -1;
     }
 
     private double enemy_health_score(AbstractMonster enemy) {
         int index = Enemies.indexOf(enemy);
         int health = Enemy_Health_List.get(index);
-        return -health*2;
+        return -health*5;
     }
 
     private double enemy_damage_score(AbstractMonster enemy) {
         int index = Enemies.indexOf(enemy);
         int damage = Damage_Enemy_Inflicts.get(index);
-        return -damage*2;
+        return -damage*3;
     }
 
     private double enemy_block_score(AbstractMonster enemy) {
         int index = Enemies.indexOf(enemy);
         int block = Block_Enemy_Will_Add.get(index);
-        return -block*2;
+        return -block*3;
     }
 
     private double enemy_debuff_applied_score(AbstractMonster enemy) {
         int index = Enemies.indexOf(enemy);
         int debuff = Debuff_Enemy_Applies.get(index);
-        return -debuff*2;
+        return -debuff*5;
     }
 
     private double enemy_weak_score(AbstractMonster enemy) {
         int index = Enemies.indexOf(enemy);
         int weak = Weak_Enemy_Has.get(index);
-        return weak*2;
+        return weak*5;
     }
 
     private double enemy_vulnerable_score(AbstractMonster enemy) {
         int index = Enemies.indexOf(enemy);
         int vulnerable = Vulnerable_Enemy_Has.get(index);
-        return vulnerable*2;
+        return vulnerable*5;
     }
 
-    private double bonus_Score() {
+    private double bonus_score() {
         return Bonus*3;
     }
 }
