@@ -6,10 +6,7 @@ import com.megacrit.cardcrawl.cards.curses.*;
 import com.megacrit.cardcrawl.cards.green.Backflip;
 import com.megacrit.cardcrawl.cards.green.MasterfulStab;
 import com.megacrit.cardcrawl.cards.red.*;
-import com.megacrit.cardcrawl.cards.status.Burn;
-import com.megacrit.cardcrawl.cards.status.Dazed;
-import com.megacrit.cardcrawl.cards.status.Slimed;
-import com.megacrit.cardcrawl.cards.status.Wound;
+import com.megacrit.cardcrawl.cards.status.*;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
@@ -167,7 +164,7 @@ public class Card_Encyclopedia {
         cards.add(new Dazed());
         cards.add(new Wound());
         cards.add(new Slimed());
-        cards.add(new Void());
+        cards.add(new VoidCard());
 
     }
     static {
