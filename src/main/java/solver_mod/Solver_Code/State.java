@@ -528,7 +528,7 @@ public class State {
         // TODO: Fill in enemy rank score method
         score += -Cards.size()*5;
         for (AbstractMonster enemy : Enemies) {
-            score += enemy_rank_score(enemy) + enemy_block_score(enemy) + enemy_damage_score(enemy);
+            score += enemy_block_score(enemy) + enemy_damage_score(enemy);
             score += enemy_debuff_applied_score(enemy);
             score += enemy_health_score(enemy);
             score += enemy_vulnerable_score(enemy);
@@ -542,7 +542,7 @@ public class State {
             return -(double)Integer.MAX_VALUE;
         }
         else {
-            return Self_Health*10;
+            return Self_Health*4;
         }
     }
 
@@ -555,15 +555,15 @@ public class State {
     }
 
     private double number_of_cards_score() {
-        return (Cards.size()*2);
+        return (Cards.size()*1);
     }
 
     private double current_block_score() {
-        return Current_Block*3;
+        return Current_Block*2.5;
     }
 
     private double current_energy_score() {
-        return Energy*4;
+        return Energy*3;
     }
 
     private double current_strength_score() {
@@ -586,20 +586,17 @@ public class State {
         return -Enemies.size()*2;
     }
 
-    private double enemy_rank_score(AbstractMonster enemy) {
-        return -1;
-    }
 
     private double enemy_health_score(AbstractMonster enemy) {
         int index = Enemies.indexOf(enemy);
         int health = Enemy_Health_List.get(index);
-        return -health*5;
+        return -health*7;
     }
 
     private double enemy_damage_score(AbstractMonster enemy) {
         int index = Enemies.indexOf(enemy);
         int damage = Damage_Enemy_Inflicts.get(index);
-        return -damage*3;
+        return -damage*5;
     }
 
     private double enemy_block_score(AbstractMonster enemy) {
