@@ -8,6 +8,8 @@ Card_Encyclopedia
 Enemy_Encyclopedia
 */
 
+//todo: add get_debuff_enemy_applies and set_debuff_enemy_applies
+
 import java.lang.reflect.Field;
 import java.util.*;
 import com.megacrit.cardcrawl.cards.AbstractCard;
