@@ -574,12 +574,12 @@ public class State {
 
     private double current_energy_score() {
         if (Energy > Cards.size()) {
-            return Energy*1;
+            return Energy*0.3;
         }
         if (Energy < Cards.size()) {
-            return Energy*2;
+            return Energy*1;
         }
-        return Energy*1.5;
+        return Energy*0.5;
     }
 
     private double current_strength_score() {
@@ -623,7 +623,7 @@ public class State {
     }
 
     private double number_of_enemies_score() {
-        return -Enemies.size()*2;
+        return -Enemies.size()*20;
     }
 
 
@@ -671,6 +671,7 @@ public class State {
         int vulnerable = Vulnerable_Enemy_Has.get(index);
         return vulnerable*5;
     }
+
 
     private double bonus_score() {
         return Bonus*3;
