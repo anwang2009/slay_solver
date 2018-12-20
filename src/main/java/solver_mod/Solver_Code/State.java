@@ -566,23 +566,56 @@ public class State {
         if (Self_Health < 20 || sum_enemy_damage > 20) {
             return Current_Block*8;
         }
+        if (sum_enemy_damage == 0) {
+            return - Current_Block*5;
+        }
         return Current_Block*2.5;
     }
 
     private double current_energy_score() {
+        if (Energy > Cards.size()) {
+            return Energy*1;
+        }
+        if (Energy < Cards.size()) {
+            return Energy*5;
+        }
         return Energy*3;
     }
 
     private double current_strength_score() {
-        return Strength*5;
+        int total_enemy_block = 0;
+        for (AbstractMonster m : Enemies) {
+            int index = Block_Enemy_Will_Add.indexOf(m);
+            total_enemy_block += Block_Enemy_Will_Add.get(index);
+        }
+        if (total_enemy_block > 10) {
+            return Strength * 5;
+        }
+        return Strength*3;
     }
 
     private double current_dexterity_score() {
-        return Dexterity*5;
+        int total_enemy_damage = 0
+        for (AbstractMonster m : Enemies) {
+            int index = Damage_Enemy_Inflicts.indexOf(m);
+            total_enemy_damage += Damage_Enemy_Inflicts.get(index);
+        }
+        if (total_enemy_damage > 15) {
+            return Strength * 5;
+        }
+        return Dexterity*3;
     }
     
     private double current_vulnerable_score() {
-        return -Vulnerable*5;
+        int total_enemy_damage = 0
+        for (AbstractMonster m : Enemies) {
+            int index = Damage_Enemy_Inflicts.indexOf(m);
+            total_enemy_damage += Damage_Enemy_Inflicts.get(index);
+        }
+        if (total_enemy_damage > 15) {
+            return Vulnerable * 5;
+        }
+        return -Vulnerable*3;
     }
 
     private double current_weak_score() {
