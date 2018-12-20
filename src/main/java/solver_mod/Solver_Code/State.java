@@ -559,6 +559,13 @@ public class State {
     }
 
     private double current_block_score() {
+        int sum_enemy_damage = 0;
+        for (AbstractMonster m : Enemies) {
+            sum_enemy_damage += get_enemy_damage(m);
+        }
+        if (Self_Health < 20 || sum_enemy_damage > 20) {
+            return Current_Block*8;
+        }
         return Current_Block*2.5;
     }
 
@@ -590,12 +597,21 @@ public class State {
     private double enemy_health_score(AbstractMonster enemy) {
         int index = Enemies.indexOf(enemy);
         int health = Enemy_Health_List.get(index);
-        return -health*7;
+        if (health < 5) {
+            return -health*100;
+        }
+        return -health*10;
     }
 
     private double enemy_damage_score(AbstractMonster enemy) {
         int index = Enemies.indexOf(enemy);
         int damage = Damage_Enemy_Inflicts.get(index);
+        if (damage > 20) {
+            return -damage*10;
+        }
+        if (damage <= Current_Block) {
+            return -damage*2;
+        }
         return -damage*5;
     }
 
