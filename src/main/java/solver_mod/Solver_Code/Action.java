@@ -530,7 +530,7 @@ public class Action {
                 state_to_use.set_energy(-ac.cost); break;
             case "Trip" :
                 for (AbstractMonster m : state_to_use.get_enemies()) {
-                    state_to_use.set_vulnerable_enemy_has();
+                    state_to_use.set_vulnerable_enemy_has(am, 2);
                 }
                 state_to_use.set_energy(-ac.cost); break;
             case "Apotheosis" :
@@ -607,7 +607,7 @@ public class Action {
                 state_to_use.set_energy(-ac.cost); break;
             case "Regret" :
                 damage = state_to_use.get_cards().size();
-                state_to_use.set_self_health(-damage_done);
+                state_to_use.set_self_health(-damage);
                 state_to_use.set_energy(-ac.cost); break;
             case "Shame" :
                 state_to_use.set_frail(1);
