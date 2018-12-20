@@ -585,7 +585,7 @@ public class State {
     private double current_strength_score() {
         int total_enemy_block = 0;
         for (AbstractMonster m : Enemies) {
-            int index = Block_Enemy_Will_Add.indexOf(m);
+            int index = Enemies.indexOf(m);
             total_enemy_block += Block_Enemy_Will_Add.get(index);
         }
         if (total_enemy_block > 10) {
@@ -595,9 +595,9 @@ public class State {
     }
 
     private double current_dexterity_score() {
-        int total_enemy_damage = 0
+        int total_enemy_damage = 0;
         for (AbstractMonster m : Enemies) {
-            int index = Damage_Enemy_Inflicts.indexOf(m);
+            int index = Enemies.indexOf(m);
             total_enemy_damage += Damage_Enemy_Inflicts.get(index);
         }
         if (total_enemy_damage > 15) {
@@ -607,9 +607,9 @@ public class State {
     }
     
     private double current_vulnerable_score() {
-        int total_enemy_damage = 0
+        int total_enemy_damage = 0;
         for (AbstractMonster m : Enemies) {
-            int index = Damage_Enemy_Inflicts.indexOf(m);
+            int index = Enemies.indexOf(m);
             total_enemy_damage += Damage_Enemy_Inflicts.get(index);
         }
         if (total_enemy_damage > 15) {
