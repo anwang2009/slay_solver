@@ -136,6 +136,8 @@ public class SolverMod implements PreTurnSubscriber, OnStartBattleSubscriber,
             }
         }
 
+        AbstractDungeon.getCurrRoom().endTurn();
+
         // picking a specific state
         //State.setState(chosenState); // or some other way to "pick" this action/state
     }
@@ -153,10 +155,8 @@ public class SolverMod implements PreTurnSubscriber, OnStartBattleSubscriber,
         }
         List<RewardItem> rewards = AbstractDungeon.combatRewardScreen.rewards;
         for (RewardItem reward : rewards) {
-            if (reward.type != RewardItem.RewardType.CARD) {
-                reward.hb.clicked = true;
-                reward.update();
-            }
+            reward.hb.clicked = true;
+            reward.update();
         }
     }
 
