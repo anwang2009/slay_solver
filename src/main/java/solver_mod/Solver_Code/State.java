@@ -577,9 +577,9 @@ public class State {
             return Energy*1;
         }
         if (Energy < Cards.size()) {
-            return Energy*5;
+            return Energy*2;
         }
-        return Energy*3;
+        return Energy*1.5;
     }
 
     private double current_strength_score() {
