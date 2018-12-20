@@ -205,7 +205,7 @@ public class Action {
                 state_to_use.set_block(5);
                 state_to_use.set_energy(-ac.cost); break;
             case "Perfected Strike" :
-                damage_done = 6;
+                damage_done = 10;
                 for (AbstractCard c : state_to_use.get_cards()) {
                     if (c.name.contains("Strike")) {
                         damage_done += 2;
