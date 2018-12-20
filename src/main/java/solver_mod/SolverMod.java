@@ -8,6 +8,7 @@ import com.megacrit.cardcrawl.cards.CardGroup.CardGroupType;
 import com.megacrit.cardcrawl.core.AbstractCreature;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
+import com.megacrit.cardcrawl.helpers.input.InputHelper;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import com.megacrit.cardcrawl.potions.AbstractPotion;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
@@ -17,6 +18,7 @@ import com.megacrit.cardcrawl.rooms.AbstractRoom;
 import basemod.BaseMod;
 import com.megacrit.cardcrawl.screens.CardRewardScreen;
 import com.megacrit.cardcrawl.screens.CombatRewardScreen;
+import com.megacrit.cardcrawl.vfx.FastCardObtainEffect;
 import solver_mod.Solver_Code.Action;
 import solver_mod.Solver_Code.State;
 
@@ -88,7 +90,7 @@ public class SolverMod implements PreTurnSubscriber, OnStartBattleSubscriber,
                     }
                     // instead of throwing an exception for invalid actions, return
                     // null (to avoid using try-catch here)
-                    State permutation = act.use_a_card(c.name, c, creature.name, (AbstractMonster)creature,
+                    State permutation = act.use_a_card(c, (AbstractMonster)creature,
                             currentState);
                     curStates.add(permutation);
                     if (permutation != null && permutation.score() > chosenState.score()) {
@@ -101,7 +103,7 @@ public class SolverMod implements PreTurnSubscriber, OnStartBattleSubscriber,
                     if (!p.canUse()) {
                         continue;
                     }
-                    State permutation = act.use_a_potion(p.name, p, creature.name, (AbstractMonster)creature,
+                    State permutation = act.use_a_potion(p, (AbstractMonster)creature,
                             currentState);
                     curStates.add(permutation);
                     if (permutation != null && permutation.score() > chosenState.score()) {
@@ -167,6 +169,16 @@ public class SolverMod implements PreTurnSubscriber, OnStartBattleSubscriber,
         selected.hb.hovered = true;
         selected.hb.justHovered = true;
         selected.hb.clicked = true;
-        screen.update();
+        InputHelper.justClickedLeft = false;
+        AbstractDungeon.effectsQueue.add(new FastCardObtainEffect(selected, selected.current_x, selected.current_y));
+        if (screen.rItem != null) {
+            AbstractDungeon.combatRewardScreen.rewards.remove(screen.rItem);
+            AbstractDungeon.combatRewardScreen.positionRewards();
+            if (AbstractDungeon.combatRewardScreen.rewards.isEmpty()) {
+                AbstractDungeon.combatRewardScreen.hasTakenAll = true;
+                AbstractDungeon.overlayMenu.proceedButton.show();
+            }
+        }
+        AbstractDungeon.closeCurrentScreen();
     }
 }

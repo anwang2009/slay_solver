@@ -13,4 +13,13 @@ public class Enemy_Encyclopedia {
     // especially to get important intent info
 
     public static List<AbstractMonster> enemies = new ArrayList<>();
+    
+    public static boolean contains(AbstractMonster monster) {
+        for (AbstractMonster m : enemies) {
+            if (monster.name.equals(m.name)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

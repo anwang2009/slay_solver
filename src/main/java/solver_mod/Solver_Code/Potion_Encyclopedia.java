@@ -25,4 +25,13 @@ public class Potion_Encyclopedia {
             new SteroidPotion(), new StrengthPotion(), new SwiftPotion(),
             new WeakenPotion()
     );
+    
+    public static boolean contains(AbstractPotion potion) {
+        for (AbstractPotion p : potions) {
+            if (potion.name.equals(p.name)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

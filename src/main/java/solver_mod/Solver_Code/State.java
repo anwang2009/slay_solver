@@ -49,6 +49,7 @@ public class State {
 
     public State deep_copy() {
         State new_state = new State();
+        new_state.initialise();
         new_state.actions = new ArrayList<>(this.actions);
         new_state.action_targets = new ArrayList<>(this.action_targets);
 
@@ -123,7 +124,7 @@ public class State {
     }
     
     public void add_enemy(AbstractMonster enemy) {
-        if (!Enemy_Encyclopedia.enemies.contains(enemy)) {
+        if (!Enemy_Encyclopedia.contains(enemy)) {
             //throw new IllegalArgumentException();
         }
         if (Enemies == null) {
@@ -221,7 +222,7 @@ public class State {
     }
 
     public void remove_potion(AbstractPotion potion_to_remove) {
-        if (!Potion_Encyclopedia.potions.contains(potion_to_remove)) {
+        if (!Potion_Encyclopedia.contains(potion_to_remove)) {
             throw new IllegalArgumentException(potion_to_remove.name);
         }
         Potions.remove(potion_to_remove);
@@ -229,7 +230,7 @@ public class State {
     }
 
     public void add_potion(AbstractPotion potion_to_add) {
-        if (!Potion_Encyclopedia.potions.contains(potion_to_add)) {
+        if (!Potion_Encyclopedia.contains(potion_to_add)) {
             throw new IllegalArgumentException(potion_to_add.name);
         }
         Potions.add(potion_to_add);
@@ -241,7 +242,7 @@ public class State {
     }
 
     public void remove_card(AbstractCard card_to_remove) {
-        if (!Card_Encyclopedia.cards.contains(card_to_remove)) {
+        if (!Card_Encyclopedia.contains(card_to_remove)) {
             throw new IllegalArgumentException();
         }
         Cards.remove(card_to_remove);
@@ -249,7 +250,7 @@ public class State {
     }
 
     public void add_card(AbstractCard card_to_add) {
-        if (!Card_Encyclopedia.cards.contains(card_to_add)) {
+        if (!Card_Encyclopedia.contains(card_to_add)) {
             //throw new IllegalArgumentException();
         }
         Cards.add(card_to_add);

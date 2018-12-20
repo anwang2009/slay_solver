@@ -170,4 +170,13 @@ public class Card_Encyclopedia {
     static {
         update();
     }
+    
+    public static boolean contains(AbstractCard card) {
+        for (AbstractCard c : cards) {
+            if (card.name.equals(c.name)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
