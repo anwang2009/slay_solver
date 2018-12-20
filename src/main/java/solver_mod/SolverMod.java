@@ -141,6 +141,7 @@ public class SolverMod implements PreTurnSubscriber, OnStartBattleSubscriber,
             for (AbstractMonster am : monsters) {
                 if (ac.canUse(player, am)) {
                     player.useCard(ac, am, 0);
+                    break;
                 }
             }
         }

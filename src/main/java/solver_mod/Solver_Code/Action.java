@@ -101,7 +101,7 @@ public class Action {
                 state_to_use.set_bonus(3);
                 break;
             case "Regen Potion":
-                state_to_use.set_self_health(state_to_use.get_max_health()*0.1s);
+                state_to_use.set_self_health(state_to_use.get_max_health()/10);
                 break;
             case "SkillPotion":
                 state_to_use.set_bonus(3);

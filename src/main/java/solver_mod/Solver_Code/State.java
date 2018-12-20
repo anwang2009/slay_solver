@@ -621,7 +621,7 @@ public class State {
         int index = Enemies.indexOf(enemy);
         int health = Enemy_Health_List.get(index);
         if (health < 10) {
-            if (Damage_Enemy_Inflicts(index) > 3) {
+            if (Damage_Enemy_Inflicts.get(index) > 3) {
                 return - health*30000;
             }
             return -health*10000;
