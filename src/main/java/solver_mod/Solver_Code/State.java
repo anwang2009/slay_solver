@@ -35,6 +35,7 @@ public class State {
     public int Weak = 0;
     public int Vulnerable = 0;
     public int Frail = 0;
+    public int Bonus = 0;
 
     public int Number_of_Enemies = 0;
     public List<AbstractMonster> Enemies = new ArrayList<AbstractMonster>();
@@ -62,6 +63,7 @@ public class State {
         new_state.set_vulnerable(Vulnerable);
         new_state.set_frail(Frail);
         new_state.set_weak(Weak);
+        new_state.set_bonus(Bonus);
         new_state.Number_of_Enemies = Number_of_Enemies;
 
         for (AbstractPotion potion : Potions) {
@@ -95,6 +97,7 @@ public class State {
         Dexterity = 0;
         Weak = 0;
         Vulnerable = 0;
+        Bonus = 0;
         for (AbstractPower power : AbstractDungeon.player.powers) {
             if (power.ID.equals("Strength")) {
                 Strength = power.amount;
@@ -194,6 +197,17 @@ public class State {
 
     public void validate_public_fields() {
         return;
+    }
+
+    public int get_bonus() {
+        return Bonus;
+    }
+
+    public void set_bonus(int bonus) {
+        Bonus += bonus;
+        if (Bonus < 0) {
+            Bonus = 0;
+        }
     }
 
     public int get_max_health() {
@@ -601,5 +615,9 @@ public class State {
         int index = Enemies.indexOf(enemy);
         int vulnerable = Vulnerable_Enemy_Has.get(index);
         return vulnerable*2;
+    }
+
+    private double bonus_Score() {
+        return Bonus*3;
     }
 }

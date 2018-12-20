@@ -22,10 +22,19 @@ public class Action {
         }
         switch (ap.name) {
             case "Ancient Potion" :
-                //set 1st encountered debuff by enemy to 0;
+                int count = 0;
+                while (count < 1) {
+                    for (AbstractMonster m : state_to_use.get_enemies()) {
+                        if (state_to_use.get_debuff_enemy_applies(m) > 0) {
+                            state_to_use.set_debuff_enemy_applies(m,
+                                    -state_to_use.get_debuff_enemy_applies(m));
+                            count += 1;
+                        }
+                    }
+                }
                 break;
             case "Attack Potion":
-                //choose 1 of 3 cards, add to cards list, set energy for card as 0;
+                state_to_use.set_bonus(3);
                 break;
             case "Block Potion":
                 state_to_use.set_block(12);
@@ -40,10 +49,7 @@ public class Action {
                 state_to_use.set_energy(2);
                 break;
             case "EntropicBrew":
-                //add 3 potions to potion list
-                //state_to_use.add_potion();
-                //state_to_use.add_potion();
-                //state_to_use.add_potion();
+                state_to_use.set_bonus(3);
                 break;
             case "EssenceOfSteel":
                 state_to_use.set_block(4);
@@ -92,13 +98,13 @@ public class Action {
                 }
                 break;
             case "PowerPotion":
-                //add one of 3 random cards; set their energy to 0
+                state_to_use.set_bonus(3);
                 break;
             case "Regen Potion":
                 state_to_use.set_self_health(5);
                 break;
             case "SkillPotion":
-                //add one of 3 random cards; set their energy to 0
+                state_to_use.set_bonus(3);
                 break;
             case "SmokeBomb":
                 for (AbstractMonster enemy : state_to_use.get_enemies()) {
