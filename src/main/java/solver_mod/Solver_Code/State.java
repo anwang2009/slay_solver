@@ -630,8 +630,11 @@ public class State {
     private double enemy_health_score(AbstractMonster enemy) {
         int index = Enemies.indexOf(enemy);
         int health = Enemy_Health_List.get(index);
-        if (health < 5) {
-            return -health*100;
+        if (health < 10) {
+            if (Damage_Enemy_Inflicts(index) > 3) {
+                return - health*30000;
+            }
+            return -health*10000;
         }
         return -health*10;
     }
