@@ -482,6 +482,28 @@ public class State {
         return Weak_Enemy_Has.get(index);
     }
 
+    public void set_debuff_enemy_applies(AbstractMonster enemy, int debuff) {
+        if (!Enemies.contains(enemy)) {
+            throw new IllegalArgumentException();
+        }
+        int index = Enemies.indexOf(enemy);
+        int current_debuff =  Debuff_Enemy_Applies.get(index);
+        current_debuff += debuff;
+        if (current_debuff < 0) {
+            current_debuff = 0;
+        }
+        Debuff_Enemy_Applies.set(index, current_debuff);
+
+    }
+
+    public int get_debuff_enemy_applies(AbstractMonster enemy) {
+        if (!Enemies.contains(enemy)) {
+            throw new IllegalArgumentException();
+        }
+        int index = Enemies.indexOf(enemy);
+        return Debuff_Enemy_Applies.get(index);
+    }
+
     public double score() {
         double score = self_health_score() + number_of_potions_Score();
         score += current_block_score() + current_energy_score() + current_strength_score();

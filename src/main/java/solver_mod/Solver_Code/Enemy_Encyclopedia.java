@@ -13,6 +13,14 @@ public class Enemy_Encyclopedia {
     // especially to get important intent info
 
     public static List<AbstractMonster> enemies = new ArrayList<>();
+
+    public static  vpoid update() {
+
+    }
+
+    static  {
+        update();
+    }
     
     public static boolean contains(AbstractMonster monster) {
         for (AbstractMonster m : enemies) {

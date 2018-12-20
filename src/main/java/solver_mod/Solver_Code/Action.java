@@ -8,7 +8,7 @@ If valid, the new state is calculated and returned.
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import com.megacrit.cardcrawl.potions.AbstractPotion;
-import com.megacrit.cardcrawl.potions.*;
+
 
 public class Action {
 
@@ -31,7 +31,7 @@ public class Action {
                 state_to_use.set_block(12);
                 break;
             case "Blood Potion":
-                state_to_use.set_self_health((int)state_to_use.get_max_health());
+                state_to_use.set_self_health(state_to_use.get_max_health());
                 break;
             case "Dexterity Potion":
                 state_to_use.set_dexterity(2);
@@ -50,19 +50,11 @@ public class Action {
                 break;
             case "Explosive Potion":
                 for(AbstractMonster enemy : state_to_use.get_enemies()) {
-                    int current_block = state_to_use.get_enemy_block(enemy);
-                    int damage_remaining = 10 - current_block;
-                    state_to_use.set_enemy_block(enemy, -10);
-                    if (damage_remaining > 0) {
-                        state_to_use.set_enemy_health(enemy, -damage_remaining);
-                    }
-                    if (state_to_use.get_enemy_health(enemy) == 0) {
-                        state_to_use.remove_enemy(enemy);
-                    }
+                   does_damage_to_enemy(state_to_use, enemy, 10);
                 }
                 break;
             case "Fairy Potion":
-                state_to_use.set_self_health((int)state_to_use.get_max_health());
+                state_to_use.set_self_health(state_to_use.get_max_health());
                 break;
             case "Fire Potion":
                 int current_block = state_to_use.get_enemy_block(am);
@@ -85,17 +77,7 @@ public class Action {
                 break;
             case "LiquidBronze":
                 for (AbstractMonster enemy : state_to_use.get_enemies()) {
-                    if (state_to_use.get_enemy_damage(enemy) > 0) {
-                        current_block = state_to_use.get_enemy_block(enemy);
-                        damage_remaining = 3 - current_block;
-                        state_to_use.set_enemy_block(enemy, - 3);
-                        if (damage_remaining > 0) {
-                            state_to_use.set_enemy_health(enemy, -damage_remaining);
-                        }
-                        if (state_to_use.get_enemy_health(am) == 0) {
-                            state_to_use.remove_enemy(am);
-                        }
-                    }
+                    does_damage_to_enemy(state_to_use, enemy, 3);
                 }
                 break;
             case "Poison Potion":
@@ -145,7 +127,7 @@ public class Action {
             default: break;
         }
         state_to_use.remove_potion(ap);
-        return state_to_use;
+        return end_turn(state_to_use);
     }
 
     public State use_a_card(AbstractCard ac, AbstractMonster am, State current_state) {
@@ -192,7 +174,7 @@ public class Action {
                 break;
             case "Cleave" :
                 for (AbstractMonster enemy : state_to_use.get_enemies()) {
-                    does_damage_to_enemy(state_to_use, am, 8);
+                    does_damage_to_enemy(state_to_use, enemy, 8);
                 }
                 state_to_use.set_energy(-ac.cost);
                 break;
@@ -233,13 +215,13 @@ public class Action {
                 state_to_use.set_energy(-ac.cost); break;
             case "Sword Boomerang" :
                 for (AbstractMonster enemy : state_to_use.get_enemies()) {
-                    does_damage_to_enemy(state_to_use, am, 3);
+                    does_damage_to_enemy(state_to_use, enemy, 3);
                 }
                 state_to_use.set_energy(-ac.cost); break;
             case "Thunderclap" :
                 for (AbstractMonster enemy : state_to_use.get_enemies()) {
-                    does_damage_to_enemy(state_to_use, am, 4);
-                    state_to_use.set_vulnerable_enemy_has(am, 1);
+                    does_damage_to_enemy(state_to_use, enemy, 4);
+                    state_to_use.set_vulnerable_enemy_has(enemy, 1);
                 }
                 state_to_use.set_energy(-ac.cost); break;
             case "True Grit" :
@@ -271,7 +253,7 @@ public class Action {
             case "Combust" :
                 state_to_use.set_self_health(-1);
                 for (AbstractMonster enemy : state_to_use.get_enemies()) {
-                    does_damage_to_enemy(state_to_use, am, 5);
+                    does_damage_to_enemy(state_to_use, enemy, 5);
                 }
                 state_to_use.set_energy(-ac.cost); break;
             case "Corruption" :
@@ -300,14 +282,14 @@ public class Action {
             case "Fire Breathing" :
                 int damage = state_to_use.get_cards().size();
                 for (AbstractMonster enemy : state_to_use.get_enemies()) {
-                    does_damage_to_enemy(state_to_use, am, damage);
+                    does_damage_to_enemy(state_to_use, enemy, damage);
                 }
                 state_to_use.set_energy(-ac.cost); break;
             case "Flame Barrier" :
                 state_to_use.set_block(12);
                 for (AbstractMonster enemy : state_to_use.get_enemies()) {
-                    if (state_to_use.get_enemy_damage(am) > 0)
-                        does_damage_to_enemy(state_to_use, am, 4);
+                    if (state_to_use.get_enemy_damage(enemy) > 0)
+                        does_damage_to_enemy(state_to_use, enemy, 4);
                 }
                 state_to_use.set_energy(-ac.cost); break;
             case "Ghostly Armor" :
@@ -324,7 +306,7 @@ public class Action {
                 state_to_use.set_energy(-ac.cost); break;
             case "Intimidate" :
                 for (AbstractMonster m : state_to_use.get_enemies()) {
-                    state_to_use.set_weak_enemy_has(am, 1);
+                    state_to_use.set_weak_enemy_has(m, 1);
                 }
                 state_to_use.set_energy(-ac.cost); break;
             case "Metallicize" :
@@ -367,8 +349,8 @@ public class Action {
                 state_to_use.set_energy(-ac.cost); break;
             case "Shockwave" :
                 for (AbstractMonster m : state_to_use.get_enemies()) {
-                    applies_debuff_to_enemy(state_to_use, am, 3, "Weak");
-                    applies_debuff_to_enemy(state_to_use, am, 3, "Vulnerable");
+                    applies_debuff_to_enemy(state_to_use, m, 3, "Weak");
+                    applies_debuff_to_enemy(state_to_use, m, 3, "Vulnerable");
                 }
                 state_to_use.set_energy(-ac.cost); break;
             case "Spot Weakness" :
@@ -431,7 +413,7 @@ public class Action {
                 state_to_use.set_energy(-ac.cost); break;
             case "Juggernaut" :
                 for (AbstractMonster m : state_to_use.get_enemies()) {
-                    does_damage_to_enemy(state_to_use, am, 5);
+                    does_damage_to_enemy(state_to_use, m, 5);
                 }
                 state_to_use.set_energy(-ac.cost); break;
             case "Limit Break" :
@@ -444,7 +426,7 @@ public class Action {
             case "Reaper" :
                 int heal = 0;
                 for (AbstractMonster m : state_to_use.get_enemies()) {
-                    does_damage_to_enemy(state_to_use, am, 4);
+                    does_damage_to_enemy(state_to_use, m, 4);
                     heal += 4;
                 }
                 state_to_use.set_self_health(heal);
@@ -475,8 +457,7 @@ public class Action {
                 }
                 state_to_use.set_energy(-ac.cost); break;
             case "Dark Shackles" :
-                //enemy loses 9 strength
-                //applies_debuff_to_enemy(state_to_use, am, 9, "");
+                state_to_use.set_debuff_enemy_applies(am, -9);
                 state_to_use.set_energy(-ac.cost); break;
             case "Deep Breath" :
                 state_to_use.set_energy(-ac.cost); break;
@@ -511,15 +492,18 @@ public class Action {
                 block = state_to_use.get_cards().size();
                 state_to_use.set_block(block);
                 state_to_use.set_energy(-ac.cost); break;
-            /*case "Panacea" :
+            case "Panacea" :
                 int count = 0;
-                for (AbstractMonster m : state_to_use.get_enemies()) {
-                    if (state_to_use.get_debuff_enemy_applies() > 0) {
-                        state_to_use.set_debuff_enemy_applies(m,
-                                -state_to_use.get_debuff_enemy_applies());
+                while (count < 1) {
+                    for (AbstractMonster m : state_to_use.get_enemies()) {
+                        if (state_to_use.get_debuff_enemy_applies(m) > 0) {
+                            state_to_use.set_debuff_enemy_applies(m,
+                                    -state_to_use.get_debuff_enemy_applies(m));
+                            count += 1;
+                        }
                     }
                 }
-                state_to_use.set_energy(-ac.cost); break;*/
+                state_to_use.set_energy(-ac.cost); break;
             case "Panic Button" :
                 state_to_use.set_block(30);
                 state_to_use.set_energy(-ac.cost); break;
@@ -530,7 +514,7 @@ public class Action {
                 state_to_use.set_energy(-ac.cost); break;
             case "Trip" :
                 for (AbstractMonster m : state_to_use.get_enemies()) {
-                    state_to_use.set_vulnerable_enemy_has(am, 2);
+                    state_to_use.set_vulnerable_enemy_has(m, 2);
                 }
                 state_to_use.set_energy(-ac.cost); break;
             case "Apotheosis" :
@@ -619,7 +603,7 @@ public class Action {
 
 
 
-        return state_to_use;
+        return end_turn(state_to_use);
     }
 
     private void does_damage_to_enemy(State state_to_use, AbstractMonster am,
