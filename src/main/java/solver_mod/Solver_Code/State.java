@@ -36,6 +36,7 @@ public class State {
     public int Vulnerable = 0;
     public int Frail = 0;
     public int Bonus = 0;
+    public int Number_Of_Cards = 0;
 
     public int Number_of_Enemies = 0;
     public List<AbstractMonster> Enemies = new ArrayList<AbstractMonster>();
@@ -65,6 +66,7 @@ public class State {
         new_state.set_weak(Weak);
         new_state.set_bonus(Bonus);
         new_state.Number_of_Enemies = Number_of_Enemies;
+        new_state.Number_Of_Cards = Number_Of_Cards;
 
         for (AbstractPotion potion : Potions) {
             new_state.add_potion(potion);
@@ -98,6 +100,7 @@ public class State {
         Weak = 0;
         Vulnerable = 0;
         Bonus = 0;
+        Number_Of_Cards = Cards.size();
         for (AbstractPower power : AbstractDungeon.player.powers) {
             if (power.ID.equals("Strength")) {
                 Strength = power.amount;
@@ -199,6 +202,17 @@ public class State {
         return;
     }
 
+    public int get_number_of_cards() {
+        return Number_Of_Cards;
+    }
+
+    public void set_number_of_cards(int number_of_cards) {
+        Number_Of_Cards += number_of_cards;
+        if (Number_Of_Cards < 0) {
+            Number_Of_Cards = 0;
+        }
+    }
+
     public int get_bonus() {
         return Bonus;
     }
@@ -260,6 +274,7 @@ public class State {
             throw new IllegalArgumentException();
         }
         Cards.remove(card_to_remove);
+        Number_Of_Cards -= 1;
         validate_public_fields();
     }
 
@@ -268,6 +283,7 @@ public class State {
             //throw new IllegalArgumentException();
         }
         Cards.add(card_to_add);
+        Number_Of_Cards += 1;
         validate_public_fields();
     }
 
@@ -555,7 +571,7 @@ public class State {
     }
 
     private double number_of_cards_score() {
-        return (Cards.size()*1);
+        return (Number_Of_Cards*5);
     }
 
     private double current_block_score() {
@@ -667,6 +683,6 @@ public class State {
 
 
     private double bonus_score() {
-        return Bonus*3;
+        return Bonus*4;
     }
 }

@@ -6,6 +6,7 @@ If valid, the new state is calculated and returned.
 */
 
 import com.megacrit.cardcrawl.cards.AbstractCard;
+import com.megacrit.cardcrawl.cards.red.Warcry;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import com.megacrit.cardcrawl.potions.AbstractPotion;
 
@@ -80,6 +81,7 @@ public class Action {
                 state_to_use.set_max_health(5);
                 break;
             case "GamblersBrew":
+                state_to_use.set_bonus(state_to_use.get_number_of_cards());
                 break;
             case "LiquidBronze":
                 for (AbstractMonster enemy : state_to_use.get_enemies()) {
@@ -87,15 +89,7 @@ public class Action {
                 }
                 break;
             case "Poison Potion":
-                current_block = state_to_use.get_enemy_block(am);
-                damage_remaining = 6 - current_block;
-                state_to_use.set_enemy_block(am, - 6);
-                if (damage_remaining > 0) {
-                    state_to_use.set_enemy_health(am, -damage_remaining);
-                }
-                if (state_to_use.get_enemy_health(am) == 0) {
-                    state_to_use.remove_enemy(am);
-                }
+                does_damage_to_enemy(state_to_use, am, 6*5*4*3*2*1);
                 break;
             case "PowerPotion":
                 state_to_use.set_bonus(3);
@@ -113,7 +107,7 @@ public class Action {
                 break;
             case "SneckoOil":
                 //implement confusion
-                //add 3 cards
+                state_to_use.set_number_of_cards(3);
                 break;
             case "SpeedPotion":
                 state_to_use.set_dexterity(5);
@@ -125,7 +119,7 @@ public class Action {
                 state_to_use.set_strength(2);
                 break;
             case "Swift Potion":
-                //add three cards
+                state_to_use.set_number_of_cards(3);
                 break;
             case "Weak Potion":
                 state_to_use.set_weak_enemy_has(am, 3);
@@ -606,9 +600,6 @@ public class Action {
                 state_to_use.set_energy(-ac.cost); break;
             default : break;
         }
-
-
-
         return end_turn(state_to_use);
     }
 
