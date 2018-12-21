@@ -9,6 +9,7 @@ import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.cards.red.Warcry;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import com.megacrit.cardcrawl.potions.AbstractPotion;
+import com.megacrit.cardcrawl.potions.FairyPotion;
 
 
 public class Action {
@@ -61,7 +62,9 @@ public class Action {
                 }
                 break;
             case "Fairy Potion":
-                state_to_use.set_self_health(state_to_use.get_max_health());
+                if (state_to_use.get_self_health() <= 1) {
+                    state_to_use.set_self_health(state_to_use.get_max_health()/10);
+                }
                 break;
             case "Fire Potion":
                 int current_block = state_to_use.get_enemy_block(am);
