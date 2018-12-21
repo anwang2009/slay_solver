@@ -100,6 +100,7 @@ public class Card_Encyclopedia {
         cards.add(new Juggernaut());
         cards.add(new LimitBreak());
         cards.add(new Offering());
+        cards.add(new Reaper());
 
         //colorless card
         cards.add(new Apparition());
