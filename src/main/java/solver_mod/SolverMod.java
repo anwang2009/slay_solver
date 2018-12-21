@@ -8,6 +8,7 @@ import com.megacrit.cardcrawl.cards.CardGroup.CardGroupType;
 import com.megacrit.cardcrawl.core.AbstractCreature;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
+import com.megacrit.cardcrawl.helpers.Hitbox;
 import com.megacrit.cardcrawl.helpers.input.InputHelper;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import com.megacrit.cardcrawl.potions.AbstractPotion;
@@ -18,10 +19,12 @@ import com.megacrit.cardcrawl.rooms.AbstractRoom;
 import basemod.BaseMod;
 import com.megacrit.cardcrawl.screens.CardRewardScreen;
 import com.megacrit.cardcrawl.screens.CombatRewardScreen;
+import com.megacrit.cardcrawl.ui.buttons.ProceedButton;
 import com.megacrit.cardcrawl.vfx.FastCardObtainEffect;
 import solver_mod.Solver_Code.Action;
 import solver_mod.Solver_Code.State;
 
+import java.lang.reflect.Field;
 import java.util.*;
 
 import static com.megacrit.cardcrawl.dungeons.AbstractDungeon.*;
@@ -187,5 +190,14 @@ public class SolverMod implements PreTurnSubscriber, OnStartBattleSubscriber,
             }
         }
         AbstractDungeon.closeCurrentScreen();
+        player.masterDeck.addToTop(selected);
+        try {
+            Field hitbox = ProceedButton.class.getDeclaredField("hb");
+            hitbox.setAccessible(true);
+            Hitbox hb = (Hitbox) hitbox.get(overlayMenu.proceedButton);
+            hb.clicked = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
