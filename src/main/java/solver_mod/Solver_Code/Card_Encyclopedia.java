@@ -143,7 +143,6 @@ public class Card_Encyclopedia {
         cards.add(new ThinkingAhead());
         cards.add(new Transmutation());
         cards.add(new Violence());
-        cards.add(new Violence());
 
         //curses
         cards.add(new AscendersBane());
